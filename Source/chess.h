@@ -54,7 +54,7 @@ class square{
     piece * occupyingPiece;
 
     public:
-    void initSquare();
+    void initSquare(int x, int y, piece *piece);
 };
 
 class board{
