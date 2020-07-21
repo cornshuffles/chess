@@ -9,6 +9,7 @@ class piece{
     int x,y;
     int color; //either BLACK or WHITE
     public:
+    void initPiece(int color, int x, int y);
     int getXCoord(){return x;}
     int getYCoord(){return y;}
     int getColor(){return color;}
@@ -16,32 +17,32 @@ class piece{
 
 // Derived Piece Classes
 
-class king: piece{
+class king:public piece{
     public:
     bool canMove(int xNew, int yNew);
 };
 
-class queen: piece{
+class queen:public piece{
     public:
     bool canMove(int xNew, int yNew);
 };
 
-class bishop: piece{
+class bishop:public piece{
     public:
     bool canMove(int xNew, int yNew);
 };
 
-class knight: piece{
+class knight:public piece{
     public:
     bool canMove(int xNew, int yNew);
 };
 
-class rook: piece{
+class rook:public piece{
     public:
     bool canMove(int xNew, int yNew);
 };
 
-class pawn: piece{
+class pawn:public piece{
     public:
     bool canMove(int xNew, int yNew);
 };
@@ -62,6 +63,7 @@ class board{
 
     public:
     void initBoard();
+    square* getSquare(int x, int y);
     bool isOccupiedByColor(int x, int y, int color); // Function to return whether a given square is occupied by a specific color
 };
 #endif
