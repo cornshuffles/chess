@@ -155,14 +155,14 @@ void piece::initPiece(int color, int x, int y){
 // Derived Piece Implementation
 
 /*------------------------------------------------------*
- * Function:    canMove                                 *
+ * Function:    king::canMove                           *
  * Params:      int xNew - new x position to move piece *
  *                         to                           *
  *              int yNew - new y position to move piece *
  *                         to                           *
- * Returns:     Void                                    *
- * Description: populates the member data of a board    *
- *              object                                  *
+ * Returns:     bool - indicates if a piece can move to *
+ *                     the given position               *
+ * Description: determines if a move is valid           *
  * -----------------------------------------------------*/
 bool king::canMove(int xNew, int yNew){
     int xCurrent = getXCoord();
@@ -173,105 +173,226 @@ bool king::canMove(int xNew, int yNew){
         return false;
     }
 
-    //Verify that the new square is not occupied by a friendly piece
+    // Verify that the new square is not occupied by a friendly piece
 
     // Verify that the new Square is within reach of the king
-    if(abs(xNew - xCurrent) >= 2 || abs(yNew-yCurrent) >= 2){
-        return false;
+    int xDelta = abs(xNew - xCurrent);
+    int yDelta = abs(yNew - yCurrent);
+    if(xDelta == 0 && yDelta == 0){
+        return false; // Cannot move to the same space 
+    }
+    if(xDelta >= 2 || yDelta >= 2){
+        return false; // Cannot move more than one space
+    }
+    else{
+        moved();
+        return true;
     }
 }
 
+/*------------------------------------------------------*
+ * Function:    queen::canMove                          *
+ * Params:      int xNew - new x position to move piece *
+ *                         to                           *
+ *              int yNew - new y position to move piece *
+ *                         to                           *
+ * Returns:     bool - indicates if a piece can move to *
+ *                     the given position               *
+ * Description: determines if a move is valid           *
+ * -----------------------------------------------------*/
 bool queen::canMove(int xNew, int yNew){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
     // Verify that the new location is a valid board location
-    if(xNew <= 0 || yNew <= 0){
+    if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
 
-    //Verify that the new square is not occupied by a friendly piece
+    // Verify that the new square is not occupied by a friendly piece
 
 
     // Verify that the new Square is within reach of the queen
-    int deltaX = xNew - xCurrent;
-    int deltaY = yNew - yCurrent;
-    if(deltaX == 0 || deltaY == 0){
-        return true; //If one delta is 0, then the move is horizontal
+    int xDelta = abs(xNew - xCurrent);
+    int yDelta = abs(yNew - yCurrent);
+    if(xDelta == 0 && yDelta == 0){
+        return false; // Cannot move to the same space 
     }
-    else if(abs(deltaX) != abs(deltaY)){
-        return false; //If not horizontal, both deltas must have same magnitude to stay on the correct diagonal
+    else if(xDelta != yDelta && xDelta != 0 && yDelta != 0){
+        return false; // If not lateral, both deltas must have same magnitude to stay on the correct diagonal
+    }
+    else{
+        return true;
     }
 }
 
+/*------------------------------------------------------*
+ * Function:    bishop::canMove                         *
+ * Params:      int xNew - new x position to move piece *
+ *                         to                           *
+ *              int yNew - new y position to move piece *
+ *                         to                           *
+ * Returns:     bool - indicates if a piece can move to *
+ *                     the given position               *
+ * Description: determines if a move is valid           *
+ * -----------------------------------------------------*/
 bool bishop::canMove(int xNew, int yNew){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
     // Verify that the new location is a valid board location
-    if(xNew <= 0 || yNew <= 0){
+    if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
 
-    //Verify that the new square is not occupied by a friendly piece
+    // Verify that the new square is not occupied by a friendly piece
 
 
     // Verify that the new Square is within reach of the bishop
-    if(abs(xNew - xCurrent) >= 2 || abs(yNew-yCurrent) >= 2){
-        return false;
+    int xDelta = abs(xNew - xCurrent);
+    int yDelta = abs(yNew - yCurrent);
+    if(xDelta == 0 || yDelta == 0){
+        return false; // Cannot move to the same space or laterally
+    }
+    else if(xDelta != yDelta){
+        return false; // Both deltas must have same magnitude to stay on the correct diagonal
+    }
+    else{
+        return true;
     }
 }
 
+/*------------------------------------------------------*
+ * Function:    knight::canMove                         *
+ * Params:      int xNew - new x position to move piece *
+ *                         to                           *
+ *              int yNew - new y position to move piece *
+ *                         to                           *
+ * Returns:     bool - indicates if a piece can move to *
+ *                     the given position               *
+ * Description: determines if a move is valid           *
+ * -----------------------------------------------------*/
 bool knight::canMove(int xNew, int yNew){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
     // Verify that the new location is a valid board location
-    if(xNew <= 0 || yNew <= 0){
+    if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
 
-    //Verify that the new square is not occupied by a friendly piece
+    // Verify that the new square is not occupied by a friendly piece
 
 
     // Verify that the new Square is within reach of the knight
-    if(abs(xNew - xCurrent) >= 2 || abs(yNew-yCurrent) >= 2){
+    int xDelta = abs(xNew - xCurrent);
+    int yDelta = abs(yNew - yCurrent);
+    if(xDelta == 2 && yDelta == 1){
+        return true;
+    }
+    else if(xDelta == 1 && yDelta == 2){
+        return true;
+    }
+    else{
         return false;
     }
 }
 
+/*------------------------------------------------------*
+ * Function:    rook::canMove                           *
+ * Params:      int xNew - new x position to move piece *
+ *                         to                           *
+ *              int yNew - new y position to move piece *
+ *                         to                           *
+ * Returns:     bool - indicates if a piece can move to *
+ *                     the given position               *
+ * Description: determines if a move is valid           *
+ * -----------------------------------------------------*/
 bool rook::canMove(int xNew, int yNew){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
     // Verify that the new location is a valid board location
-    if(xNew <= 0 || yNew <= 0){
+    if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
 
-    //Verify that the new square is not occupied by a friendly piece
+    // Verify that the new square is not occupied by a friendly piece
 
 
     // Verify that the new Square is within reach of the rook
-    if(abs(xNew - xCurrent) >= 2 || abs(yNew-yCurrent) >= 2){
-        return false;
+    int xDelta = abs(xNew - xCurrent);
+    int yDelta = abs(yNew - yCurrent);
+    if(xDelta == 0 && yDelta == 0){
+        return false; // Cannot move to the same space 
+    }
+    else if(xDelta != 0 && yDelta != 0 ){
+        return false; // Rook must stay on one row/column, so one of the deltas must be 0
+    }
+    else{
+        moved();
+        return true;
     }
 }
 
+/*------------------------------------------------------*
+ * Function:    pawn::canMove                           *
+ * Params:      int xNew - new x position to move piece *
+ *                         to                           *
+ *              int yNew - new y position to move piece *
+ *                         to                           *
+ * Returns:     bool - indicates if a piece can move to *
+ *                     the given position               *
+ * Description: determines if a move is valid           *
+ * -----------------------------------------------------*/
 bool pawn::canMove(int xNew, int yNew){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
     // Verify that the new location is a valid board location
-    if(xNew <= 0 || yNew <= 0){
+    if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
 
-    //Verify that the new square is not occupied by a friendly piece
+    // Verify that the new square is not occupied by a friendly piece
 
 
     // Verify that the new Square is within reach of the pawn
-    if(abs(xNew - xCurrent) >= 2 || abs(yNew-yCurrent) >= 2){
-        return false;
+    int xDelta = xNew - xCurrent;
+    int yDelta = yNew - yCurrent;
+    int myColor = getColor();
+    if(myColor == WHITE){
+        (bool)myColor;
+        if(xDelta == 1 && yDelta == 1 && isOccupiedByColor(xNew,yNew,BLACK)){
+            moved();
+            return true; // Capturing
+        }
+        else if(xDelta == 0 && yDelta == 1){
+            moved();
+            return true; 
+        }
+        else if(xDelta == 0 && yDelta == 2 && !hasMoved){
+            moved();
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        if(xDelta == -1 && yDelta == -1 && isOccupiedByColor(xNew,yNew,WHITE)){
+            moved();
+            return true; // Capturing
+        }
+        else if(xDelta == 0 && yDelta == -1){
+            moved();
+            return true; 
+        }
+        else if(xDelta == 0 && yDelta == -2 && !hasMoved){
+            moved();
+            return true;
+        }
+        else{
+            return false;
     }
 }

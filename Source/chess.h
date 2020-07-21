@@ -18,8 +18,10 @@ class piece{
 // Derived Piece Classes
 
 class king:public piece{
+    bool hasMoved = false;
     public:
     bool canMove(int xNew, int yNew);
+    void moved(){hasMoved = true;}
 };
 
 class queen:public piece{
@@ -38,13 +40,17 @@ class knight:public piece{
 };
 
 class rook:public piece{
+    bool hasMoved = false;
     public:
     bool canMove(int xNew, int yNew);
+    void moved(){hasMoved = true;}
 };
 
 class pawn:public piece{
+    bool hasMoved = false;
     public:
     bool canMove(int xNew, int yNew);
+    void moved(){hasMoved = true;}
 };
 
 // Board Classes
