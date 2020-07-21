@@ -41,38 +41,38 @@ void board::initBoard(){
             if(y == 0){
                 switch (x){
                     case 0:
-                    case 7:
+                    case 7:{
                     // Rooks
                         rook whiteRook;
                         whiteRook.initPiece(WHITE, x, y);
                         squareArray[x][y].initSquare(x, y, &whiteRook);
-                        break;
+                    break;}
                     case 1:
-                    case 6:
+                    case 6:{
                     // Knights
                         knight whiteKnight;
                         whiteKnight.initPiece(WHITE, x, y);
                         squareArray[x][y].initSquare(x, y, &whiteKnight);
-                        break;
+                    break;}
                     case 2:
-                    case 5:
+                    case 5:{
                     // Bishops
                         bishop whiteBishop;
                         whiteBishop.initPiece(WHITE, x, y);
                         squareArray[x][y].initSquare(x, y, &whiteBishop);
-                        break;
-                    case 3:
+                    break;}
+                    case 3:{
                     // Queen
                         queen whiteQueen;
                         whiteQueen.initPiece(WHITE, x, y);
                         squareArray[x][y].initSquare(x, y, &whiteQueen);
-                        break;
-                    case 4:
+                    break;}
+                    case 4:{
                     // King
                         king whiteKing;
                         whiteKing.initPiece(WHITE, x, y);
                         squareArray[x][y].initSquare(x, y, &whiteKing);
-                        break;
+                    break;}
                     
                 }
             }
@@ -80,38 +80,38 @@ void board::initBoard(){
             else if(y == 7){
                 switch (x){
                     case 0:
-                    case 7:
+                    case 7:{
                     // Rooks
                         rook blackRook;
                         blackRook.initPiece(BLACK, x, y);
                         squareArray[x][y].initSquare(x, y, &blackRook);
-                        break;
+                        break;}
                     case 1:
-                    case 6:
+                    case 6:{
                     // Knights
                         knight blackKnight;
                         blackKnight.initPiece(BLACK, x, y);
                         squareArray[x][y].initSquare(x, y, &blackKnight);
-                        break;
+                        break;}
                     case 2:
-                    case 5:
+                    case 5:{
                     // Bishops
                         bishop blackBishop;
                         blackBishop.initPiece(BLACK, x, y);
                         squareArray[x][y].initSquare(x, y, &blackBishop);
-                        break;
-                    case 3:
+                        break;}
+                    case 3:{
                     // Queen
                         queen blackQueen;
                         blackQueen.initPiece(BLACK, x, y);
                         squareArray[x][y].initSquare(x, y, &blackQueen);
-                        break;
-                    case 4:
+                        break;}
+                    case 4:{
                     // King
                         king blackKing;
                         blackKing.initPiece(BLACK, x, y);
                         squareArray[x][y].initSquare(x, y, &blackKing);
-                        break;
+                        break;}
                     
                 }
             }
@@ -394,5 +394,6 @@ bool pawn::canMove(int xNew, int yNew){
         }
         else{
             return false;
+        }
     }
 }
