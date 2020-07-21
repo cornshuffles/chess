@@ -127,6 +127,9 @@ void board::initBoard(){
                 blackPawn.initPiece(BLACK, x, y);
                 squareArray[x][y].initSquare(x, y, &blackPawn);
             }
+            else{
+                squareArray[x][y].initSquare(x, y, NULL);
+            }
         }
     }
 
