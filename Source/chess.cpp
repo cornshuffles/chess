@@ -24,7 +24,7 @@ bool king::canMove(int xNew, int yNew){
     int yCurrent = getYCoord();
 
     // Verify that the new location is a valid board location
-    if(xNew <= 0 || yNew <= 0){
+    if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
 
