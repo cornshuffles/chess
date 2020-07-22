@@ -20,7 +20,6 @@ void square::initSquare(int x, int y, piece *piece){
     
     }
 
-}
 
 /*------------------------------------------------------*
  * Function:    initBoard                               *
@@ -131,6 +130,20 @@ void board::initBoard(){
 }
 
 /*------------------------------------------------------*
+ * Function:    getSquare                               *
+ * Params:      int x - x position of the square        *
+ *              int y - y position of the square        *
+ *                                                      *
+ * Returns:     square* - Pointer to the given square   *
+ *                                                      *
+ * Description: returns a pointer to the square         *
+ *              specified by the params                 *
+ * -----------------------------------------------------*/
+ square* board::getSquare(int x, int y){
+     return &squareArray[x][y];
+ }
+
+/*------------------------------------------------------*
  * Function:    isOccupied                              *
  * Params:      int x - x position to search on         *
  *              int y - y position to search on         *
@@ -140,8 +153,8 @@ void board::initBoard(){
  * Description: returns a bool indicating if a given    *
  *              square is occupied                      *
  * -----------------------------------------------------*/
-bool isOccupied(int x, int y){
-    if(squareArray[x][y].piece == NULL){
+bool board::isOccupied(int x, int y){
+    if(squareArray[x][y].getPiece() == NULL){
         return false;
     }
     else{
@@ -160,11 +173,11 @@ bool isOccupied(int x, int y){
  * Description: returns a bool indicating if a given    *
  *              square is occupied by a given color     *
  * -----------------------------------------------------*/
-bool isOccupiedByColor(int x, int y, int color){
-    if(squareArray[x][y].piece == NULL){
+bool board::isOccupiedByColor(int x, int y, int color){
+    if(squareArray[x][y].getPiece() == NULL){
         return false;
     }
-    else if{squareArray[x][y].piece.getColor() == color){
+    else if(squareArray[x][y].getPiece()->getColor() == color){
         return true;
     }
     else{
@@ -183,11 +196,11 @@ bool isOccupiedByColor(int x, int y, int color){
  * Description: returns a bool indicating if a given    *
  *              square is occupied by a given piece     *
  * -----------------------------------------------------*/
-bool isOccupiedByPiece(int x, int y, int type){
-    if(squareArray[x][y].piece == NULL){
+bool board::isOccupiedByPiece(int x, int y, int type){
+    if(squareArray[x][y].getPiece() == NULL){
         return false;
     }
-    else if{squareArray[x][y].piece.getType() == type){
+    else if(squareArray[x][y].getPiece()->getType() == type){
         return true;
     }
     else{
@@ -207,11 +220,11 @@ bool isOccupiedByPiece(int x, int y, int type){
  *              color's king is in check on the given   *
  *              board                                   *
  * -----------------------------------------------------*/
-bool isChecked(int color, board *theBoard){
+bool board::isChecked(int color, board *theBoard){
     int xCurrent, yCurrent; // Current position of the specified king
     for(int x = 0; x < 7; x++){
         for(int y = 0; y < 7; y++){
-            if(theBoard->squareArray[x][y].piece.getType() == KING && theBoard->squareArray[x][y].piece.getColor() == color){
+            if(theBoard->getSquare(x,y)->getPiece()->getType() == KING && theBoard->getSquare(x,y)->getPiece()->getColor() == color){
                 xCurrent = x;
                 yCurrent = y; 
             }
@@ -219,42 +232,42 @@ bool isChecked(int color, board *theBoard){
     }
      // First verify that the new square is not threatened by knights
      if(!(xCurrent + 1 > 7) || !(yCurrent + 2 > 7)){
-        if(theBoard->squareArray[xCurrent + 1][yCurrent + 2].piece.getType() == KNIGHT){
+        if(theBoard->getSquare(xCurrent + 1, yCurrent + 2)->getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent + 2 > 7) || !(yCurrent + 1 > 7)){
-        if(theBoard->squareArray[xCurrent + 2][yCurrent + 1].piece.getType() == KNIGHT){
+        if(theBoard->getSquare(xCurrent + 2, yCurrent + 1)->getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent + 2 > 7) || !(yCurrent - 1 < 0)){
-        if(theBoard->squareArray[xCurrent + 2][yCurrent - 1].piece.getType() == KNIGHT){
+        if(theBoard->getSquare(xCurrent + 2, yCurrent - 1)->getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent + 1 > 7) || !(yCurrent - 2 < 0)){
-        if(theBoard->squareArray[xCurrent + 1][yCurrent - 2].piece.getType() == KNIGHT){
+        if(theBoard->getSquare(xCurrent + 1, yCurrent - 2)->getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent - 1 < 0) || !(yCurrent - 2 < 0)){
-        if(theBoard->squareArray[xCurrent - 1][yCurrent - 2].piece.getType() == KNIGHT){
+        if(theBoard->getSquare(xCurrent - 1, yCurrent - 2)->getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent - 2 < 0) || !(yCurrent - 1 < 0)){
-        if(theBoard->squareArray[xCurrent - 2][yCurrent - 1].piece.getType() == KNIGHT){
+        if(theBoard->getSquare(xCurrent - 2, yCurrent - 1)->getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent - 2 < 0) || !(yCurrent + 1 > 7)){
-        if(theBoard->squareArray[xCurrent - 2][yCurrent + 1].piece.getType() == KNIGHT){
+        if(theBoard->getSquare(xCurrent - 2, yCurrent + 1)->getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent - 1 < 0) || !(yCurrent + 2 > 7)){
-        if(theBoard->squareArray[xCurrent - 1][yCurrent + 2].piece.getType() == KNIGHT){
+        if(theBoard->getSquare(xCurrent - 1, yCurrent + 2)->getPiece()->getType() == KNIGHT){
             return false;
         }
     }
@@ -281,15 +294,15 @@ bool isChecked(int color, board *theBoard){
  *              given square is threatened on the given *
  *              board by a non-knight                   *
  * -----------------------------------------------------*/
-bool checkLinesOfSight(int x, int y, board theBoard){
-    if(theBoard.checkNorth(int x, int y, board theBoard) == false 
-    && theBoard.checkNorthEast(int x, int y, board theBoard) == false 
-    && theBoard.checkEast(int x, int y, board theBoard) == false 
-    && theBoard.checkSouthEast(int x, int y, board theBoard) == false 
-    && theBoard.checkSouth(int x, int y, board theBoard) == false 
-    && theBoard.checkSouthWest(int x, int y, board theBoard) == false 
-    && theBoard.checkWest(int x, int y, board theBoard) == false 
-    && theBoard.checkNorthWest(int x, int y, board theBoard) == false){
+bool board::checkLinesOfSight(int x, int y, board *theBoard){
+    if(theBoard->checkNorth(x, y, theBoard) == false 
+    && theBoard->checkNorthEast(x, y, theBoard) == false 
+    && theBoard->checkEast(x, y, theBoard) == false 
+    && theBoard->checkSouthEast(x, y, theBoard) == false 
+    && theBoard->checkSouth(x, y, theBoard) == false 
+    && theBoard->checkSouthWest(x, y, theBoard) == false 
+    && theBoard->checkWest(x, y, theBoard) == false 
+    && theBoard->checkNorthWest(x, y, theBoard) == false){
         return false;
     }
     else{
@@ -308,16 +321,16 @@ bool checkLinesOfSight(int x, int y, board theBoard){
  *              given square is threatened on the given *
  *              board from north                        *
  * -----------------------------------------------------*/
-bool checkNorth(int x, int y, board *theBoard){
+bool board::checkNorth(int x, int y, board *theBoard){
     if(y + 1 <= 7){
-        if(theBoard->squareArray[x][y + 1].piece == NULL){
-            checkLinesOfSight(x, y + 1, theBoard);
+        if(theBoard->squareArray[x][y + 1].getPiece() == NULL){
+            checkNorth(x, y + 1, theBoard);
         }
         else{
-            if(theBoard->squareArray[x][y + 1].piece.type == ROOK){
+            if(theBoard->squareArray[x][y + 1].getPiece()->getType() == ROOK){
                 return true;
             }
-            else if(theBoard->squareArray[x][y + 1].piece.type == QUEEN){
+            else if(theBoard->squareArray[x][y + 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -326,7 +339,7 @@ bool checkNorth(int x, int y, board *theBoard){
         } 
     }
     else{
-        return false
+        return false;
     }
 }
 
@@ -343,21 +356,21 @@ bool checkNorth(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from north-east                   *
  * -----------------------------------------------------*/
-bool checkNorthEast(int x, int y, board *theBoard){
-    if(theBoard->squareArray[x + 1][y + 1].piece.type != NULL){
-        if(theBoard->squareArray[x + 1][y + 1].piece.type == PAWN){
+bool board::checkNorthEast(int x, int y, board *theBoard){
+    if(theBoard->squareArray[x + 1][y + 1].getPiece() != NULL){
+        if(theBoard->squareArray[x + 1][y + 1].getPiece()->getType() == PAWN){
             return true;
         }
     }
     if(x + 1 <= 7 && y + 1 <= 7){
-        if(theBoard->squareArray[x + 1][y + 1].piece == NULL){
-            checkLinesOfSight(x + 1, y + 1, theBoard);
+        if(theBoard->squareArray[x + 1][y + 1].getPiece() == NULL){
+            checkNorthEast(x + 1, y + 1, theBoard);
         }
         else{
-            if(theBoard->squareArray[x + 1][y + 1].piece.type == BISHOP){
+            if(theBoard->squareArray[x + 1][y + 1].getPiece()->getType() == BISHOP){
                 return true;
             }
-            else if(theBoard->squareArray[x + 1][y + 1].piece.type == QUEEN){
+            else if(theBoard->squareArray[x + 1][y + 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -366,7 +379,7 @@ bool checkNorthEast(int x, int y, board *theBoard){
         } 
     }
     else{
-        return false
+        return false;
     }
 }
 
@@ -383,16 +396,16 @@ bool checkNorthEast(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from east                         *
  * -----------------------------------------------------*/
-bool checkEast(int x, int y, board *theBoard){
+bool board::checkEast(int x, int y, board *theBoard){
     if(x + 1 <= 7){
-        if(theBoard->squareArray[x + 1][y].piece == NULL){
-            checkLinesOfSight(x + 1, y, theBoard);
+        if(theBoard->squareArray[x + 1][y].getPiece() == NULL){
+            checkEast(x + 1, y, theBoard);
         }
         else{
-            if(theBoard->squareArray[x + 1][y].piece.type == ROOK){
+            if(theBoard->squareArray[x + 1][y].getPiece()->getType() == ROOK){
                 return true;
             }
-            else if(theBoard->squareArray[x + 1][y].piece.type == QUEEN){
+            else if(theBoard->squareArray[x + 1][y].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -401,7 +414,7 @@ bool checkEast(int x, int y, board *theBoard){
         } 
     }
     else{
-        return false
+        return false;
     }
 }
 
@@ -418,16 +431,16 @@ bool checkEast(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from south-east                   *
  * -----------------------------------------------------*/
-bool checkSouthEast(int x, int y, board *theBoard){
+bool board::checkSouthEast(int x, int y, board *theBoard){
     if(x + 1 <= 7 && y - 1 >= 0){
-        if(theBoard->squareArray[x + 1][y - 1].piece == NULL){
-            checkLinesOfSight(x + 1, y - 1, theBoard);
+        if(theBoard->squareArray[x + 1][y - 1].getPiece() == NULL){
+            checkSouthEast(x + 1, y - 1, theBoard);
         }
         else{
-            if(theBoard->squareArray[x + 1][y - 1].piece.type == BISHOP){
+            if(theBoard->squareArray[x + 1][y - 1].getPiece()->getType() == BISHOP){
                 return true;
             }
-            else if(theBoard->squareArray[x + 1][y - 1].piece.type == QUEEN){
+            else if(theBoard->squareArray[x + 1][y - 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -436,7 +449,7 @@ bool checkSouthEast(int x, int y, board *theBoard){
         } 
     }
     else{
-        return false
+        return false;
     }
 }
 
@@ -452,16 +465,16 @@ bool checkSouthEast(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from south                        *
  * -----------------------------------------------------*/
-bool checkSouth(int x, int y, board *theBoard){
+bool board::checkSouth(int x, int y, board *theBoard){
     if(y - 1 >= 0){
-        if(theBoard->squareArray[x][y - 1].piece == NULL){
-            checkLinesOfSight(x, y - 1, theBoard);
+        if(theBoard->squareArray[x][y - 1].getPiece() == NULL){
+            checkSouth(x, y - 1, theBoard);
         }
         else{
-            if(theBoard->squareArray[x][y - 1].piece.type == ROOK){
+            if(theBoard->squareArray[x][y - 1].getPiece()->getType() == ROOK){
                 return true;
             }
-            else if(theBoard->squareArray[x][y - 1].piece.type == QUEEN){
+            else if(theBoard->squareArray[x][y - 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -470,7 +483,7 @@ bool checkSouth(int x, int y, board *theBoard){
         } 
     }
     else{
-        return false
+        return false;
     }
 }
 
@@ -487,16 +500,16 @@ bool checkSouth(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from south-west                   *
  * -----------------------------------------------------*/
-bool checkSouthWest(int x, int y, board *theBoard){
+bool board::checkSouthWest(int x, int y, board *theBoard){
     if(x - 1 >= 0 && y - 1 >= 0){
-        if(theBoard->squareArray[x - 1][y - 1].piece == NULL){
-            checkLinesOfSight(x - 1, y - 1, theBoard);
+        if(theBoard->squareArray[x - 1][y - 1].getPiece() == NULL){
+            checkSouthWest(x - 1, y - 1, theBoard);
         }
         else{
-            if(theBoard->squareArray[x - 1][y - 1].piece.type == BISHOP){
+            if(theBoard->squareArray[x - 1][y - 1].getPiece()->getType() == BISHOP){
                 return true;
             }
-            else if(theBoard->squareArray[x - 1][y - 1].piece.type == QUEEN){
+            else if(theBoard->squareArray[x - 1][y - 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -505,7 +518,7 @@ bool checkSouthWest(int x, int y, board *theBoard){
         } 
     }
     else{
-        return false
+        return false;
     }
 }
 
@@ -522,16 +535,16 @@ bool checkSouthWest(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from west                         *
  * -----------------------------------------------------*/
-bool checkWest(int x, int y, board *theBoard){
+bool board::checkWest(int x, int y, board *theBoard){
     if(x - 1 >= 0){
-        if(theBoard->squareArray[x - 1][y].piece == NULL){
-            checkLinesOfSight(x - 1, y, theBoard);
+        if(theBoard->squareArray[x - 1][y].getPiece() == NULL){
+            checkWest(x - 1, y, theBoard);
         }
         else{
-            if(theBoard->squareArray[x - 1][y].piece.type == ROOK){
+            if(theBoard->squareArray[x - 1][y].getPiece()->getType() == ROOK){
                 return true;
             }
-            else if(theBoard->squareArray[x - 1][y].piece.type == QUEEN){
+            else if(theBoard->squareArray[x - 1][y].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -540,7 +553,7 @@ bool checkWest(int x, int y, board *theBoard){
         } 
     }
     else{
-        return false
+        return false;
     }
 }
 
@@ -557,21 +570,21 @@ bool checkWest(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from north-west                   *
  * -----------------------------------------------------*/
-bool checkNorthWest(int x, int y, board *theBoard){
-    if(theBoard->squareArray[x - 1][y + 1].piece.type != NULL){
-        if(theBoard->squareArray[x - 1][y + 1].piece.type == PAWN){
+bool board::checkNorthWest(int x, int y, board *theBoard){
+    if(theBoard->squareArray[x - 1][y + 1].getPiece() != NULL){
+        if(theBoard->squareArray[x - 1][y + 1].getPiece()->getType() == PAWN){
             return true;
         }
     }
     if(x - 1 >= 0 && y + 1 <= 7){
-        if(theBoard->squareArray[x - 1][y + 1].piece == NULL){
-            checkLinesOfSight(x - 1, y + 1, theBoard);
+        if(theBoard->squareArray[x - 1][y + 1].getPiece() == NULL){
+            checkNorthWest(x - 1, y + 1, theBoard);
         }
         else{
-            if(theBoard->squareArray[x - 1][y + 1].piece.type == BISHOP){
+            if(theBoard->squareArray[x - 1][y + 1].getPiece()->getType() == BISHOP){
                 return true;
             }
-            else if(theBoard->squareArray[x - 1][y + 1].piece.type == QUEEN){
+            else if(theBoard->squareArray[x - 1][y + 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -580,7 +593,7 @@ bool checkNorthWest(int x, int y, board *theBoard){
         } 
     }
     else{
-        return false
+        return false;
     }
 }
 // Piece Implementation
@@ -625,8 +638,10 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
     }
 
     // Verify that the new square is not occupied by a friendly piece 
-    if(theBoard->squareArray[xNew][yNew].piece.color == getColor()){
-        return false
+    if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
+        if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
+            return false;
+        }
     }
 
     // Verify that the new square is not threatened by an enemy piece
@@ -656,7 +671,7 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
  *                     the given position               *
  * Description: determines if a move is valid           *
  * -----------------------------------------------------*/
-bool queen::canMove(int xNew, int yNew){
+bool queen::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
@@ -692,7 +707,7 @@ bool queen::canMove(int xNew, int yNew){
  *                     the given position               *
  * Description: determines if a move is valid           *
  * -----------------------------------------------------*/
-bool bishop::canMove(int xNew, int yNew){
+bool bishop::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
@@ -728,7 +743,7 @@ bool bishop::canMove(int xNew, int yNew){
  *                     the given position               *
  * Description: determines if a move is valid           *
  * -----------------------------------------------------*/
-bool knight::canMove(int xNew, int yNew){
+bool knight::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
@@ -764,7 +779,7 @@ bool knight::canMove(int xNew, int yNew){
  *                     the given position               *
  * Description: determines if a move is valid           *
  * -----------------------------------------------------*/
-bool rook::canMove(int xNew, int yNew){
+bool rook::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
@@ -801,7 +816,7 @@ bool rook::canMove(int xNew, int yNew){
  *                     the given position               *
  * Description: determines if a move is valid           *
  * -----------------------------------------------------*/
-bool pawn::canMove(int xNew, int yNew){
+bool pawn::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
 
@@ -819,7 +834,7 @@ bool pawn::canMove(int xNew, int yNew){
     int myColor = getColor();
     if(myColor == WHITE){
         (bool)myColor;
-        if(xDelta == 1 && yDelta == 1 && isOccupiedByColor(xNew,yNew,BLACK)){
+        if(xDelta == 1 && yDelta == 1 && theBoard->isOccupiedByColor(xNew,yNew,BLACK)){
             moved();
             return true; // Capturing
         }
@@ -836,7 +851,7 @@ bool pawn::canMove(int xNew, int yNew){
         }
     }
     else{
-        if(xDelta == -1 && yDelta == -1 && isOccupiedByColor(xNew,yNew,WHITE)){
+        if(xDelta == -1 && yDelta == -1 && theBoard->isOccupiedByColor(xNew,yNew,WHITE)){
             moved();
             return true; // Capturing
         }

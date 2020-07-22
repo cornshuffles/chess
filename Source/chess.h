@@ -11,7 +11,7 @@
 #define KING    6
 #define PAWN    7
 
-// Board Classes
+class piece;
 
 class square{
     int x,y;
@@ -19,6 +19,7 @@ class square{
 
     public:
     void initSquare(int x, int y, piece *piece);
+    piece *getPiece(){return occupyingPiece;}
 };
 
 class board{
@@ -39,7 +40,7 @@ class board{
     bool checkSouth(int x, int y, board *theBoard); // Function recursively checks south line of sight for threats
     bool checkSouthWest(int x, int y, board *theBoard); // Function recursively checks south-west line of sight for threats
     bool checkWest(int x, int y, board *theBoard); // Function recursively checks west line of sight for threats
-    bool checknorthWest(int x, int y, board *theBoard); // Function recursively checks north-west line of sight for threats
+    bool checkNorthWest(int x, int y, board *theBoard); // Function recursively checks north-west line of sight for threats
 };
 
 // Base Piece Class
@@ -48,11 +49,11 @@ class piece{
     int color; // either BLACK or WHITE
     int type; // either ROOK, KNIGHT, BISHOP, QUEEN, KING, or PAWN
     public:
-    void initPiece(int color, int x, int y);
+    void initPiece(int color, int x, int y, int type);
     int getXCoord(){return x;}
     int getYCoord(){return y;}
     int getColor(){return color;}
-    int getPiece(){return type;}
+    int getType(){return type;}
 };
 
 // Derived Piece Classes
@@ -89,7 +90,7 @@ class rook:public piece{
 class pawn:public piece{
     bool hasMoved = false;
     public:
-    bool canMove(int xNew, int yNew);
+    bool canMove(int xNew, int yNew, board *theBoard);
     void moved(){hasMoved = true;}
 };
 
