@@ -1,1 +1,1 @@
-Simple Implementation of Chess
+Simple Implementation of Chess.
