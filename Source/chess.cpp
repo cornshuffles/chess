@@ -220,11 +220,11 @@ bool board::isOccupiedByPiece(int x, int y, int type){
  *              color's king is in check on the given   *
  *              board                                   *
  * -----------------------------------------------------*/
-bool board::isChecked(int color, board *theBoard){
+bool board::isChecked(int color){
     int xCurrent, yCurrent; // Current position of the specified king
     for(int x = 0; x < 7; x++){
         for(int y = 0; y < 7; y++){
-            if(theBoard->getSquare(x,y)->getPiece()->getType() == KING && theBoard->getSquare(x,y)->getPiece()->getColor() == color){
+            if(squareArray[x][y].getPiece()->getType() == KING && squareArray[x][y].getPiece()->getColor() == color){
                 xCurrent = x;
                 yCurrent = y; 
             }
@@ -232,48 +232,48 @@ bool board::isChecked(int color, board *theBoard){
     }
      // First verify that the new square is not threatened by knights
      if(!(xCurrent + 1 > 7) || !(yCurrent + 2 > 7)){
-        if(theBoard->getSquare(xCurrent + 1, yCurrent + 2)->getPiece()->getType() == KNIGHT){
+        if(squareArray[xCurrent + 1][yCurrent + 2].getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent + 2 > 7) || !(yCurrent + 1 > 7)){
-        if(theBoard->getSquare(xCurrent + 2, yCurrent + 1)->getPiece()->getType() == KNIGHT){
+        if(squareArray[xCurrent + 2][yCurrent + 1].getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent + 2 > 7) || !(yCurrent - 1 < 0)){
-        if(theBoard->getSquare(xCurrent + 2, yCurrent - 1)->getPiece()->getType() == KNIGHT){
+        if(squareArray[xCurrent + 2][yCurrent - 1].getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent + 1 > 7) || !(yCurrent - 2 < 0)){
-        if(theBoard->getSquare(xCurrent + 1, yCurrent - 2)->getPiece()->getType() == KNIGHT){
+        if(squareArray[xCurrent + 1][yCurrent - 2].getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent - 1 < 0) || !(yCurrent - 2 < 0)){
-        if(theBoard->getSquare(xCurrent - 1, yCurrent - 2)->getPiece()->getType() == KNIGHT){
+        if(squareArray[xCurrent - 1][yCurrent - 2].getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent - 2 < 0) || !(yCurrent - 1 < 0)){
-        if(theBoard->getSquare(xCurrent - 2, yCurrent - 1)->getPiece()->getType() == KNIGHT){
+        if(squareArray[xCurrent - 2][yCurrent - 1].getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent - 2 < 0) || !(yCurrent + 1 > 7)){
-        if(theBoard->getSquare(xCurrent - 2, yCurrent + 1)->getPiece()->getType() == KNIGHT){
+        if(squareArray[xCurrent - 2][yCurrent + 1].getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     if(!(xCurrent - 1 < 0) || !(yCurrent + 2 > 7)){
-        if(theBoard->getSquare(xCurrent - 1, yCurrent + 2)->getPiece()->getType() == KNIGHT){
+        if(squareArray[xCurrent - 1][yCurrent + 2].getPiece()->getType() == KNIGHT){
             return false;
         }
     }
     
     // Verify that the new square is not threatened by any other pieces
-    if(checkLinesOfSight(xCurrent, yCurrent, theBoard)){
+    if(checkLinesOfSight(xCurrent, yCurrent)){
         return false;
     }
     else{
@@ -294,15 +294,15 @@ bool board::isChecked(int color, board *theBoard){
  *              given square is threatened on the given *
  *              board by a non-knight                   *
  * -----------------------------------------------------*/
-bool board::checkLinesOfSight(int x, int y, board *theBoard){
-    if(theBoard->checkNorth(x, y, theBoard) == false 
-    && theBoard->checkNorthEast(x, y, theBoard) == false 
-    && theBoard->checkEast(x, y, theBoard) == false 
-    && theBoard->checkSouthEast(x, y, theBoard) == false 
-    && theBoard->checkSouth(x, y, theBoard) == false 
-    && theBoard->checkSouthWest(x, y, theBoard) == false 
-    && theBoard->checkWest(x, y, theBoard) == false 
-    && theBoard->checkNorthWest(x, y, theBoard) == false){
+bool board::checkLinesOfSight(int x, int y){
+    if(this->checkNorth(x, y) == false
+    && this->checkNorthEast(x, y) == false 
+    && this->checkEast(x, y) == false 
+    && this->checkSouthEast(x, y) == false 
+    && this->checkSouth(x, y) == false 
+    && this->checkSouthWest(x, y) == false 
+    && this->checkWest(x, y) == false 
+    && this->checkNorthWest(x, y) == false){
         return false;
     }
     else{
@@ -321,16 +321,16 @@ bool board::checkLinesOfSight(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from north                        *
  * -----------------------------------------------------*/
-bool board::checkNorth(int x, int y, board *theBoard){
+bool board::checkNorth(int x, int y){
     if(y + 1 <= 7){
-        if(theBoard->squareArray[x][y + 1].getPiece() == NULL){
-            checkNorth(x, y + 1, theBoard);
+        if(squareArray[x][y + 1].getPiece() == NULL){
+            checkNorth(x, y + 1);
         }
         else{
-            if(theBoard->squareArray[x][y + 1].getPiece()->getType() == ROOK){
+            if(squareArray[x][y + 1].getPiece()->getType() == ROOK){
                 return true;
             }
-            else if(theBoard->squareArray[x][y + 1].getPiece()->getType() == QUEEN){
+            else if(squareArray[x][y + 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -356,21 +356,21 @@ bool board::checkNorth(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from north-east                   *
  * -----------------------------------------------------*/
-bool board::checkNorthEast(int x, int y, board *theBoard){
-    if(theBoard->squareArray[x + 1][y + 1].getPiece() != NULL){
-        if(theBoard->squareArray[x + 1][y + 1].getPiece()->getType() == PAWN){
+bool board::checkNorthEast(int x, int y){
+    if(squareArray[x + 1][y + 1].getPiece() != NULL){
+        if(squareArray[x + 1][y + 1].getPiece()->getType() == PAWN){
             return true;
         }
     }
     if(x + 1 <= 7 && y + 1 <= 7){
-        if(theBoard->squareArray[x + 1][y + 1].getPiece() == NULL){
-            checkNorthEast(x + 1, y + 1, theBoard);
+        if(squareArray[x + 1][y + 1].getPiece() == NULL){
+            checkNorthEast(x + 1, y + 1);
         }
         else{
-            if(theBoard->squareArray[x + 1][y + 1].getPiece()->getType() == BISHOP){
+            if(squareArray[x + 1][y + 1].getPiece()->getType() == BISHOP){
                 return true;
             }
-            else if(theBoard->squareArray[x + 1][y + 1].getPiece()->getType() == QUEEN){
+            else if(squareArray[x + 1][y + 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -396,16 +396,16 @@ bool board::checkNorthEast(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from east                         *
  * -----------------------------------------------------*/
-bool board::checkEast(int x, int y, board *theBoard){
+bool board::checkEast(int x, int y){
     if(x + 1 <= 7){
-        if(theBoard->squareArray[x + 1][y].getPiece() == NULL){
-            checkEast(x + 1, y, theBoard);
+        if(squareArray[x + 1][y].getPiece() == NULL){
+            checkEast(x + 1, y);
         }
         else{
-            if(theBoard->squareArray[x + 1][y].getPiece()->getType() == ROOK){
+            if(squareArray[x + 1][y].getPiece()->getType() == ROOK){
                 return true;
             }
-            else if(theBoard->squareArray[x + 1][y].getPiece()->getType() == QUEEN){
+            else if(squareArray[x + 1][y].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -431,16 +431,16 @@ bool board::checkEast(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from south-east                   *
  * -----------------------------------------------------*/
-bool board::checkSouthEast(int x, int y, board *theBoard){
+bool board::checkSouthEast(int x, int y){
     if(x + 1 <= 7 && y - 1 >= 0){
-        if(theBoard->squareArray[x + 1][y - 1].getPiece() == NULL){
-            checkSouthEast(x + 1, y - 1, theBoard);
+        if(squareArray[x + 1][y - 1].getPiece() == NULL){
+            checkSouthEast(x + 1, y - 1);
         }
         else{
-            if(theBoard->squareArray[x + 1][y - 1].getPiece()->getType() == BISHOP){
+            if(squareArray[x + 1][y - 1].getPiece()->getType() == BISHOP){
                 return true;
             }
-            else if(theBoard->squareArray[x + 1][y - 1].getPiece()->getType() == QUEEN){
+            else if(squareArray[x + 1][y - 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -465,16 +465,16 @@ bool board::checkSouthEast(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from south                        *
  * -----------------------------------------------------*/
-bool board::checkSouth(int x, int y, board *theBoard){
+bool board::checkSouth(int x, int y){
     if(y - 1 >= 0){
-        if(theBoard->squareArray[x][y - 1].getPiece() == NULL){
-            checkSouth(x, y - 1, theBoard);
+        if(squareArray[x][y - 1].getPiece() == NULL){
+            checkSouth(x, y - 1);
         }
         else{
-            if(theBoard->squareArray[x][y - 1].getPiece()->getType() == ROOK){
+            if(squareArray[x][y - 1].getPiece()->getType() == ROOK){
                 return true;
             }
-            else if(theBoard->squareArray[x][y - 1].getPiece()->getType() == QUEEN){
+            else if(squareArray[x][y - 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -500,16 +500,16 @@ bool board::checkSouth(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from south-west                   *
  * -----------------------------------------------------*/
-bool board::checkSouthWest(int x, int y, board *theBoard){
+bool board::checkSouthWest(int x, int y){
     if(x - 1 >= 0 && y - 1 >= 0){
-        if(theBoard->squareArray[x - 1][y - 1].getPiece() == NULL){
-            checkSouthWest(x - 1, y - 1, theBoard);
+        if(squareArray[x - 1][y - 1].getPiece() == NULL){
+            checkSouthWest(x - 1, y - 1);
         }
         else{
-            if(theBoard->squareArray[x - 1][y - 1].getPiece()->getType() == BISHOP){
+            if(squareArray[x - 1][y - 1].getPiece()->getType() == BISHOP){
                 return true;
             }
-            else if(theBoard->squareArray[x - 1][y - 1].getPiece()->getType() == QUEEN){
+            else if(squareArray[x - 1][y - 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -535,16 +535,16 @@ bool board::checkSouthWest(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from west                         *
  * -----------------------------------------------------*/
-bool board::checkWest(int x, int y, board *theBoard){
+bool board::checkWest(int x, int y){
     if(x - 1 >= 0){
-        if(theBoard->squareArray[x - 1][y].getPiece() == NULL){
-            checkWest(x - 1, y, theBoard);
+        if(squareArray[x - 1][y].getPiece() == NULL){
+            checkWest(x - 1, y);
         }
         else{
-            if(theBoard->squareArray[x - 1][y].getPiece()->getType() == ROOK){
+            if(squareArray[x - 1][y].getPiece()->getType() == ROOK){
                 return true;
             }
-            else if(theBoard->squareArray[x - 1][y].getPiece()->getType() == QUEEN){
+            else if(squareArray[x - 1][y].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -570,21 +570,21 @@ bool board::checkWest(int x, int y, board *theBoard){
  *              given square is threatened on the given *
  *              board from north-west                   *
  * -----------------------------------------------------*/
-bool board::checkNorthWest(int x, int y, board *theBoard){
-    if(theBoard->squareArray[x - 1][y + 1].getPiece() != NULL){
-        if(theBoard->squareArray[x - 1][y + 1].getPiece()->getType() == PAWN){
+bool board::checkNorthWest(int x, int y){
+    if(squareArray[x - 1][y + 1].getPiece() != NULL){
+        if(squareArray[x - 1][y + 1].getPiece()->getType() == PAWN){
             return true;
         }
     }
     if(x - 1 >= 0 && y + 1 <= 7){
-        if(theBoard->squareArray[x - 1][y + 1].getPiece() == NULL){
-            checkNorthWest(x - 1, y + 1, theBoard);
+        if(squareArray[x - 1][y + 1].getPiece() == NULL){
+            checkNorthWest(x - 1, y + 1);
         }
         else{
-            if(theBoard->squareArray[x - 1][y + 1].getPiece()->getType() == BISHOP){
+            if(squareArray[x - 1][y + 1].getPiece()->getType() == BISHOP){
                 return true;
             }
-            else if(theBoard->squareArray[x - 1][y + 1].getPiece()->getType() == QUEEN){
+            else if(squareArray[x - 1][y + 1].getPiece()->getType() == QUEEN){
                 return true;
             }
             else{
@@ -596,6 +596,29 @@ bool board::checkNorthWest(int x, int y, board *theBoard){
         return false;
     }
 }
+
+/*------------------------------------------------------*
+ * Function:    move                                    *
+ * Params:      int xCurrent - current x position to    *
+ *                             move from                *
+ *              int yCurrent - current y position to    *
+ *                             move from                *
+ *              int xNew - new x position to move to    *
+ *              int yNew - new y position to move to    *
+ *              board theBoard - the board to check     *
+ *                                                      *
+ * Returns:     board* - pointer to the board with the  *
+ *                       potential move made            *
+ * Description: returns a pointer to a board on which a *
+ *              potential move has been made            *
+ * -----------------------------------------------------*/
+board* board::move(int xCurrent, int yCurrent, int xNew, int yNew){
+    squareArray[xCurrent][yCurrent].getPiece()->setCoords(xNew, yNew);
+    squareArray[xNew][yNew].setPiece(squareArray[xCurrent][yCurrent].getPiece());
+    squareArray[xCurrent][yCurrent].setPiece(NULL);
+    return this;
+}
+
 // Piece Implementation
 
 /*------------------------------------------------------*
@@ -645,7 +668,9 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
     }
 
     // Verify that the new square is not threatened by an enemy piece
-   
+    if(theBoard->isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
+        return false;
+    }
     // Verify that the new square is within reach of the king
     int xDelta = abs(xNew - xCurrent);
     int yDelta = abs(yNew - yCurrent);
@@ -681,11 +706,80 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
     }
 
     // Verify that the new square is not occupied by a friendly piece
-
-
-    // Verify that the new Square is within reach of the queen
+    if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
+        if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
+            return false;
+        }
+    }
+    // Verify that no pieces are in the path of movement between the current and new squares
     int xDelta = abs(xNew - xCurrent);
     int yDelta = abs(yNew - yCurrent);
+    if(xNew - xCurrent > 0 && yNew - yCurrent == 0){
+        for(int x = xCurrent; x < xNew; x++){
+            if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
+                return false;
+            }
+        }
+    }
+    if(xNew - xCurrent < 0 && yNew - yCurrent == 0){
+        for(int x = xCurrent; x < xNew; x--){
+            if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
+                return false;
+            }
+        }
+    }
+    if(xNew - xCurrent == 0 && yNew - yCurrent > 0){
+        for(int y = yCurrent; y < yNew; y++){
+            if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
+                return false;
+            }
+        }
+    }
+    if(xNew - xCurrent == 0 && yNew - yCurrent < 0){
+        for(int y = yCurrent; y < yNew; y--){
+            if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
+                return false;
+            }
+        }
+    }
+    if(xNew - xCurrent > 0 && yNew - yCurrent > 0 && xDelta == yDelta){
+        for(int x = xCurrent; x < xNew; x++){
+            for(int y = yCurrent; y < yNew; y++){
+                if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                    return false;
+                }
+            }
+        }
+    }
+    if(xNew - xCurrent > 0 && yNew - yCurrent < 0 && xDelta == yDelta){
+        for(int x = xCurrent; x < xNew; x++){
+            for(int y = yCurrent; y < yNew; y--){
+                if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                    return false;
+                }
+            }
+        }
+    }
+    if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){
+        for(int x = xCurrent; x < xNew; x--){
+            for(int y = yCurrent; y < yNew; y++){
+                if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                    return false;
+                }
+            }
+        }
+    }
+    if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){
+        for(int x = xCurrent; x < xNew; x--){
+            for(int y = yCurrent; y < yNew; y--){
+                if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Verify that the new Square is within reach of the queen
     if(xDelta == 0 && yDelta == 0){
         return false; // Cannot move to the same space 
     }
@@ -717,11 +811,53 @@ bool bishop::canMove(int xNew, int yNew, board *theBoard){
     }
 
     // Verify that the new square is not occupied by a friendly piece
+    if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
+        if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
+            return false;
+        }
+    }
 
-
-    // Verify that the new Square is within reach of the bishop
+    // Verify that there is not another piece obstructing the path between the current and new squares
     int xDelta = abs(xNew - xCurrent);
     int yDelta = abs(yNew - yCurrent);
+    if(xNew - xCurrent > 0 && yNew - yCurrent > 0 && xDelta == yDelta){
+        for(int x = xCurrent; x < xNew; x++){
+            for(int y = yCurrent; y < yNew; y++){
+                if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                    return false;
+                }
+            }
+        }
+    }
+    if(xNew - xCurrent > 0 && yNew - yCurrent < 0 && xDelta == yDelta){
+        for(int x = xCurrent; x < xNew; x++){
+            for(int y = yCurrent; y < yNew; y--){
+                if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                    return false;
+                }
+            }
+        }
+    }
+    if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){
+        for(int x = xCurrent; x < xNew; x--){
+            for(int y = yCurrent; y < yNew; y++){
+                if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                    return false;
+                }
+            }
+        }
+    }
+    if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){
+        for(int x = xCurrent; x < xNew; x--){
+            for(int y = yCurrent; y < yNew; y--){
+                if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Verify that the new Square is within reach of the bishop
     if(xDelta == 0 || yDelta == 0){
         return false; // Cannot move to the same space or laterally
     }
@@ -753,7 +889,11 @@ bool knight::canMove(int xNew, int yNew, board *theBoard){
     }
 
     // Verify that the new square is not occupied by a friendly piece
-
+    if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
+        if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
+            return false;
+        }
+    }
 
     // Verify that the new Square is within reach of the knight
     int xDelta = abs(xNew - xCurrent);
@@ -789,7 +929,41 @@ bool rook::canMove(int xNew, int yNew, board *theBoard){
     }
 
     // Verify that the new square is not occupied by a friendly piece
+    if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
+        if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
+            return false;
+        }
+    }
 
+    // Verify that there is not another piece obstructing the path between the current and new squares
+    if(xNew - xCurrent > 0 && yNew - yCurrent == 0){
+        for(int x = xCurrent; x < xNew; x++){
+            if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
+                return false;
+            }
+        }
+    }
+    if(xNew - xCurrent < 0 && yNew - yCurrent == 0){
+        for(int x = xCurrent; x < xNew; x--){
+            if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
+                return false;
+            }
+        }
+    }
+    if(xNew - xCurrent == 0 && yNew - yCurrent > 0){
+        for(int y = yCurrent; y < yNew; y++){
+            if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
+                return false;
+            }
+        }
+    }
+    if(xNew - xCurrent == 0 && yNew - yCurrent < 0){
+        for(int y = yCurrent; y < yNew; y--){
+            if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
+                return false;
+            }
+        }
+    }
 
     // Verify that the new Square is within reach of the rook
     int xDelta = abs(xNew - xCurrent);
@@ -812,6 +986,7 @@ bool rook::canMove(int xNew, int yNew, board *theBoard){
  *                         to                           *
  *              int yNew - new y position to move piece *
  *                         to                           *
+ *              board theBoard - the board to check on  *
  * Returns:     bool - indicates if a piece can move to *
  *                     the given position               *
  * Description: determines if a move is valid           *
@@ -826,7 +1001,11 @@ bool pawn::canMove(int xNew, int yNew, board *theBoard){
     }
 
     // Verify that the new square is not occupied by a friendly piece
-
+    if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
+        if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
+            return false;
+        }
+    }
 
     // Verify that the new Square is within reach of the pawn
     int xDelta = xNew - xCurrent;
@@ -838,12 +1017,16 @@ bool pawn::canMove(int xNew, int yNew, board *theBoard){
             moved();
             return true; // Capturing
         }
+        else if(xDelta == -1 && yDelta == 1 && theBoard->isOccupiedByColor(xNew,yNew,BLACK)){
+            moved();
+            return true; // Capturing
+        }
         else if(xDelta == 0 && yDelta == 1){
             moved();
             return true; 
         }
-        else if(xDelta == 0 && yDelta == 2 && !hasMoved){
-            moved();
+        else if(xDelta == 0 && yDelta == 2 && !hasMoved && !(theBoard->isOccupied(xNew, yNew)) && !(theBoard->isOccupied(xNew, yNew - 1))){
+            moved(); // First move allows the pawn to move 2 squares
             return true;
         }
         else{
@@ -855,13 +1038,17 @@ bool pawn::canMove(int xNew, int yNew, board *theBoard){
             moved();
             return true; // Capturing
         }
+        else if(xDelta == 1 && yDelta == -1 && theBoard->isOccupiedByColor(xNew,yNew,WHITE)){
+            moved();
+            return true; // Capturing
+        }
         else if(xDelta == 0 && yDelta == -1){
             moved();
             return true; 
         }
-        else if(xDelta == 0 && yDelta == -2 && !hasMoved){
+        else if(xDelta == 0 && yDelta == -2 && !hasMoved && !theBoard->isOccupied(xNew, yNew) && !theBoard->isOccupied(xNew, yNew + 1)){
             moved();
-            return true;
+            return true; // First move allows the pawn to move 2 squares
         }
         else{
             return false;

@@ -20,6 +20,7 @@ class square{
     public:
     void initSquare(int x, int y, piece *piece);
     piece *getPiece(){return occupyingPiece;}
+    void setPiece(piece *newPiece){occupyingPiece = newPiece;}
 };
 
 class board{
@@ -31,16 +32,17 @@ class board{
     bool isOccupiedByColor(int x, int y, int color); // Function to return whether a given square is occupied by a specific color
     bool isOccupied(int x, int y); // Function to return whether a given square is occupied
     bool isOccupiedByPiece(int x, int y, int type); // Function to return whether a given square is occupied by a given piece
-    bool isChecked(int color, board *theBoard); // Function returning a bool indicating whether the given color is in check
-    bool checkLinesOfSight(int x, int y, board *theBoard); // Function recursively checks lines of sight from given point for non-knight threats
-    bool checkNorth(int x, int y, board *theBoard); // Function recursively checks north line of sight for threats
-    bool checkNorthEast(int x, int y, board *theBoard); // Function recursively checks north-east line of sight for threats
-    bool checkEast(int x, int y, board *theBoard); // Function recursively checks east line of sight for threats
-    bool checkSouthEast(int x, int y, board *theBoard); // Function recursively checks south-east line of sight for threats
-    bool checkSouth(int x, int y, board *theBoard); // Function recursively checks south line of sight for threats
-    bool checkSouthWest(int x, int y, board *theBoard); // Function recursively checks south-west line of sight for threats
-    bool checkWest(int x, int y, board *theBoard); // Function recursively checks west line of sight for threats
-    bool checkNorthWest(int x, int y, board *theBoard); // Function recursively checks north-west line of sight for threats
+    bool isChecked(int color); // Function returning a bool indicating whether the given color is in check
+    bool checkLinesOfSight(int x, int y); // Function recursively checks lines of sight from given point for non-knight threats
+    bool checkNorth(int x, int y); // Function recursively checks north line of sight for threats
+    bool checkNorthEast(int x, int y); // Function recursively checks north-east line of sight for threats
+    bool checkEast(int x, int y); // Function recursively checks east line of sight for threats
+    bool checkSouthEast(int x, int y); // Function recursively checks south-east line of sight for threats
+    bool checkSouth(int x, int y); // Function recursively checks south line of sight for threats
+    bool checkSouthWest(int x, int y); // Function recursively checks south-west line of sight for threats
+    bool checkWest(int x, int y); // Function recursively checks west line of sight for threats
+    bool checkNorthWest(int x, int y); // Function recursively checks north-west line of sight for threats
+    board* move(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to a board with a potential move made
 };
 
 // Base Piece Class
@@ -54,6 +56,8 @@ class piece{
     int getYCoord(){return y;}
     int getColor(){return color;}
     int getType(){return type;}
+    void setCoords(int xNew, int yNew){this->x = xNew;
+                                       this->y = yNew;}
 };
 
 // Derived Piece Classes
