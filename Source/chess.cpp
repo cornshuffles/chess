@@ -17,9 +17,7 @@ void square::initSquare(int x, int y, piece *piece){
     this->x = x;
     this->y = y;
     this->occupyingPiece = piece;
-    
     }
-
 
 /*------------------------------------------------------*
  * Function:    initBoard                               *
@@ -211,14 +209,12 @@ bool board::isOccupiedByPiece(int x, int y, int type){
 /*------------------------------------------------------*
  * Function:    isChecked                               *
  * Params:      int color - color of king to check      *
- *              board theBoard - board to check         *
  *                                                      *
  * Returns:     bool - indicates whether the king of    *
  *                     the given color is in check on   *
  *                     the given board                  *
  * Description: returns a bool indicating if the given  *
- *              color's king is in check on the given   *
- *              board                                   *
+ *              color's king is in check                *
  * -----------------------------------------------------*/
 bool board::isChecked(int color){
     int xCurrent, yCurrent; // Current position of the specified king
@@ -285,14 +281,13 @@ bool board::isChecked(int color){
  * Function:    checkLinesOfSight                       *
  * Params:      int x - x position to check from        *
  *              int y - y position to check from        *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     bool - indicates whether the given      *
  *                     square is threatened by a        *
  *                     non-knight                       *
  * Description: returns a bool indicating whether the   *
- *              given square is threatened on the given *
- *              board by a non-knight                   *
+ *              given square is threatened by a         *
+*               non-knight                              *
  * -----------------------------------------------------*/
 bool board::checkLinesOfSight(int x, int y){
     if(this->checkNorth(x, y) == false
@@ -313,13 +308,11 @@ bool board::checkLinesOfSight(int x, int y){
  * Function:    checkNorth                              *
  * Params:      int x - x position to check from        *
  *              int y - y position to check from        *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     bool - indicates whether the given      *
  *                     square is threatened from north  *
  * Description: returns a bool indicating whether the   *
- *              given square is threatened on the given *
- *              board from north                        *
+ *              given square is threatened from north   *
  * -----------------------------------------------------*/
 bool board::checkNorth(int x, int y){
     if(y + 1 <= 7){
@@ -347,14 +340,13 @@ bool board::checkNorth(int x, int y){
  * Function:    checkNorthEast                          *
  * Params:      int x - x position to check from        *
  *              int y - y position to check from        *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     bool - indicates whether the given      *
  *                     square is threatened from        *
  *                     north-east                       *
  * Description: returns a bool indicating whether the   *
- *              given square is threatened on the given *
- *              board from north-east                   *
+ *              given square is threatened  from        *
+ *              north-east                              *
  * -----------------------------------------------------*/
 bool board::checkNorthEast(int x, int y){
     if(squareArray[x + 1][y + 1].getPiece() != NULL){
@@ -387,14 +379,12 @@ bool board::checkNorthEast(int x, int y){
  * Function:    checkEast                               *
  * Params:      int x - x position to check from        *
  *              int y - y position to check from        *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     bool - indicates whether the given      *
  *                     square is threatened from        *
  *                     east                             *
  * Description: returns a bool indicating whether the   *
- *              given square is threatened on the given *
- *              board from east                         *
+ *              given square is threatened  from east   *
  * -----------------------------------------------------*/
 bool board::checkEast(int x, int y){
     if(x + 1 <= 7){
@@ -422,14 +412,13 @@ bool board::checkEast(int x, int y){
  * Function:    checkSouthEast                          *
  * Params:      int x - x position to check from        *
  *              int y - y position to check from        *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     bool - indicates whether the given      *
  *                     square is threatened from        *
  *                     south-east                       *
  * Description: returns a bool indicating whether the   *
- *              given square is threatened on the given *
- *              board from south-east                   *
+ *              given square is threatened from         *
+ *              south-east                              *
  * -----------------------------------------------------*/
 bool board::checkSouthEast(int x, int y){
     if(x + 1 <= 7 && y - 1 >= 0){
@@ -457,13 +446,11 @@ bool board::checkSouthEast(int x, int y){
  * Function:    checkSouth                              *
  * Params:      int x - x position to check from        *
  *              int y - y position to check from        *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     bool - indicates whether the given      *
  *                     square is threatened from south  *
  * Description: returns a bool indicating whether the   *
- *              given square is threatened on the given *
- *              board from south                        *
+ *              given square is threatened from south   *
  * -----------------------------------------------------*/
 bool board::checkSouth(int x, int y){
     if(y - 1 >= 0){
@@ -491,14 +478,13 @@ bool board::checkSouth(int x, int y){
  * Function:    checkSouthWest                          *
  * Params:      int x - x position to check from        *
  *              int y - y position to check from        *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     bool - indicates whether the given      *
  *                     square is threatened from        *
  *                     south-west                       *
  * Description: returns a bool indicating whether the   *
- *              given square is threatened on the given *
- *              board from south-west                   *
+ *              given square is threatened from         *
+ *              south-west                              *
  * -----------------------------------------------------*/
 bool board::checkSouthWest(int x, int y){
     if(x - 1 >= 0 && y - 1 >= 0){
@@ -526,14 +512,12 @@ bool board::checkSouthWest(int x, int y){
  * Function:    checkWest                               *
  * Params:      int x - x position to check from        *
  *              int y - y position to check from        *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     bool - indicates whether the given      *
  *                     square is threatened from        *
  *                     west                             *
  * Description: returns a bool indicating whether the   *
- *              given square is threatened on the given *
- *              board from west                         *
+ *              given square is threatened from west    *
  * -----------------------------------------------------*/
 bool board::checkWest(int x, int y){
     if(x - 1 >= 0){
@@ -561,14 +545,13 @@ bool board::checkWest(int x, int y){
  * Function:    checkNorthWest                          *
  * Params:      int x - x position to check from        *
  *              int y - y position to check from        *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     bool - indicates whether the given      *
  *                     square is threatened from        *
  *                     north-west                       *
  * Description: returns a bool indicating whether the   *
- *              given square is threatened on the given *
- *              board from north-west                   *
+ *              given square is threatened from         *
+ *              north-west                              *
  * -----------------------------------------------------*/
 bool board::checkNorthWest(int x, int y){
     if(squareArray[x - 1][y + 1].getPiece() != NULL){
@@ -605,12 +588,11 @@ bool board::checkNorthWest(int x, int y){
  *                             move from                *
  *              int xNew - new x position to move to    *
  *              int yNew - new y position to move to    *
- *              board theBoard - the board to check     *
  *                                                      *
  * Returns:     board* - pointer to the board with the  *
  *                       potential move made            *
  * Description: returns a pointer to a board on which a *
- *              potential move has been made            *
+ *              move has been made                      *
  * -----------------------------------------------------*/
 board* board::move(int xCurrent, int yCurrent, int xNew, int yNew){
     squareArray[xCurrent][yCurrent].getPiece()->setCoords(xNew, yNew);
@@ -618,6 +600,24 @@ board* board::move(int xCurrent, int yCurrent, int xNew, int yNew){
     squareArray[xCurrent][yCurrent].setPiece(NULL);
     return this;
 }
+
+/*------------------------------------------------------*
+ * Function:    capture                                    *
+ * Params:      int xCurrent - current x position to    *
+ *                             move from                *
+ *              int yCurrent - current y position to    *
+ *                             move from                *
+ *              int xNew - new x position to move to    *
+ *              int yNew - new y position to move to    *
+ *                                                      *
+ * Returns:     board* - pointer to the board with the  *
+ *                       potential move made            *
+ * Description: returns a pointer to a board on which a *
+ *              capturing move has been made            *
+ * -----------------------------------------------------*/
+board* board::capture(int xCurrent, int yCurrent, int xNew, int yNew){
+    squareArray[xNew][yNew].setPiece(NULL); // remove captured piece
+    this->move(xCurrent, yCurrent, xNew, yNew);
 
 // Piece Implementation
 
@@ -649,7 +649,8 @@ void piece::initPiece(int color, int x, int y, int type){
  *                               check on               *
  * Returns:     bool - indicates if a piece can move to *
  *                     the given position               *
- * Description: determines if a move is valid           *
+ * Description: checks if a given move can be made by   *
+ *              the king                                *
  * -----------------------------------------------------*/
 bool king::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
@@ -667,8 +668,10 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
         }
     }
 
+    board newBoard = theBoard->move(xCurrent, yCurrent, xNew, yNew);
+
     // Verify that the new square is not threatened by an enemy piece
-    if(theBoard->isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
+    if(newBoard->isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
         return false;
     }
     // Verify that the new square is within reach of the king
@@ -692,9 +695,12 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
  *                         to                           *
  *              int yNew - new y position to move piece *
  *                         to                           *
+ *              board theBoard - the board object to    *
+ *                               check on               *
  * Returns:     bool - indicates if a piece can move to *
  *                     the given position               *
- * Description: determines if a move is valid           *
+ * Description: checks if a given move can be made by   *
+ *              the queen                               *
  * -----------------------------------------------------*/
 bool queen::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
@@ -797,9 +803,12 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
  *                         to                           *
  *              int yNew - new y position to move piece *
  *                         to                           *
+ *              board theBoard - the board object to    *
+ *                               check on               *
  * Returns:     bool - indicates if a piece can move to *
  *                     the given position               *
- * Description: determines if a move is valid           *
+ * Description: checks if a given move can be made by   *
+ *              the bishop                              *
  * -----------------------------------------------------*/
 bool bishop::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
@@ -875,9 +884,12 @@ bool bishop::canMove(int xNew, int yNew, board *theBoard){
  *                         to                           *
  *              int yNew - new y position to move piece *
  *                         to                           *
+ *              board theBoard - the board object to    *
+ *                               check on               *
  * Returns:     bool - indicates if a piece can move to *
  *                     the given position               *
- * Description: determines if a move is valid           *
+ * Description: checks if a given move can be made by   *
+ *              the knight                              *
  * -----------------------------------------------------*/
 bool knight::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
@@ -915,9 +927,12 @@ bool knight::canMove(int xNew, int yNew, board *theBoard){
  *                         to                           *
  *              int yNew - new y position to move piece *
  *                         to                           *
+ *              board theBoard - the board object to    *
+ *                               check on               *
  * Returns:     bool - indicates if a piece can move to *
  *                     the given position               *
- * Description: determines if a move is valid           *
+ * Description: checks if a given move can be made by   *
+ *              the rook                                *
  * -----------------------------------------------------*/
 bool rook::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
@@ -989,7 +1004,8 @@ bool rook::canMove(int xNew, int yNew, board *theBoard){
  *              board theBoard - the board to check on  *
  * Returns:     bool - indicates if a piece can move to *
  *                     the given position               *
- * Description: determines if a move is valid           *
+ * Description: checks if a given move can be made by   *
+ *              the pawn                                *
  * -----------------------------------------------------*/
 bool pawn::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();

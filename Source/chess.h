@@ -42,7 +42,8 @@ class board{
     bool checkSouthWest(int x, int y); // Function recursively checks south-west line of sight for threats
     bool checkWest(int x, int y); // Function recursively checks west line of sight for threats
     bool checkNorthWest(int x, int y); // Function recursively checks north-west line of sight for threats
-    board* move(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to a board with a potential move made
+    board* move(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to the board with a move made
+    board* capture(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to the board with a capturingn move made
 };
 
 // Base Piece Class
