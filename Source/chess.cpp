@@ -1,5 +1,7 @@
 #include "chess.h"
 #include <cstdlib>
+#include <string>  
+
 
 // Board Implementation
 
@@ -618,7 +620,39 @@ board* board::move(int xCurrent, int yCurrent, int xNew, int yNew){
 board* board::capture(int xCurrent, int yCurrent, int xNew, int yNew){
     squareArray[xNew][yNew].setPiece(NULL); // remove captured piece
     this->move(xCurrent, yCurrent, xNew, yNew);
+}
 
+/*------------------------------------------------------*
+ * Function:    isCheckmate                             *
+ * Params:      int color - color of king to check      *
+ *                                                      *
+ * Returns:     bool - indicates whether the king of    *
+ *                     the given color is checkmated    *
+ * Description: returns a bool indicating if the given  *
+ *              color's king is in a checkmate position *
+ * -----------------------------------------------------*/
+bool board::isCheckmate(int color){
+    if(isChecked(color)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+/*------------------------------------------------------*
+ * Function:    printBoard                              *
+ * Params:      board theBoard - pointer to the current *
+ *                               board                  *
+ * Returns:     string - string to visually represent   *
+ *                       the board's current state      *
+ * Description: returns a string of ASCII characters to *
+ *              enable display of the board
+ * -----------------------------------------------------*/
+string board::printBoard(){
+    string currentBoard;
+
+}
 // Piece Implementation
 
 /*------------------------------------------------------*

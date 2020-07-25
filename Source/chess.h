@@ -33,6 +33,7 @@ class board{
     bool isOccupied(int x, int y); // Function to return whether a given square is occupied
     bool isOccupiedByPiece(int x, int y, int type); // Function to return whether a given square is occupied by a given piece
     bool isChecked(int color); // Function returning a bool indicating whether the given color is in check
+    bool isCheckmate(int color); // Function returning a bool indicating if the given color is checkmated
     bool checkLinesOfSight(int x, int y); // Function recursively checks lines of sight from given point for non-knight threats
     bool checkNorth(int x, int y); // Function recursively checks north line of sight for threats
     bool checkNorthEast(int x, int y); // Function recursively checks north-east line of sight for threats
