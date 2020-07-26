@@ -15,7 +15,7 @@ class piece;
 
 class square{
     int x,y;
-    piece * occupyingPiece;
+    piece *occupyingPiece;
 
     public:
     void initSquare(int x, int y, piece *piece);
@@ -45,6 +45,7 @@ class board{
     bool checkNorthWest(int x, int y); // Function recursively checks north-west line of sight for threats
     board* move(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to the board with a move made
     board* capture(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to the board with a capturingn move made
+    void printBoard();
 };
 
 // Base Piece Class
@@ -54,6 +55,7 @@ class piece{
     int type; // either ROOK, KNIGHT, BISHOP, QUEEN, KING, or PAWN
     public:
     void initPiece(int color, int x, int y, int type);
+    virtual bool canMove(int xNew, int yNew, board *theBoard){};
     int getXCoord(){return x;}
     int getYCoord(){return y;}
     int getColor(){return color;}

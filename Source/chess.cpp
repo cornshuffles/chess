@@ -1,7 +1,10 @@
 #include "chess.h"
 #include <cstdlib>
+#include <iostream>
+#include <stdio.h>
 #include <string>  
 
+using namespace std;
 
 // Board Implementation
 
@@ -220,8 +223,8 @@ bool board::isOccupiedByPiece(int x, int y, int type){
  * -----------------------------------------------------*/
 bool board::isChecked(int color){
     int xCurrent, yCurrent; // Current position of the specified king
-    for(int x = 0; x < 7; x++){
-        for(int y = 0; y < 7; y++){
+    for(int x = 0; x < 8; x++){
+        for(int y = 0; y < 8; y++){
             if(squareArray[x][y].getPiece()->getType() == KING && squareArray[x][y].getPiece()->getColor() == color){
                 xCurrent = x;
                 yCurrent = y; 
@@ -632,8 +635,51 @@ board* board::capture(int xCurrent, int yCurrent, int xNew, int yNew){
  *              color's king is in a checkmate position *
  * -----------------------------------------------------*/
 bool board::isCheckmate(int color){
+    piece *king;
+    int xIter, yIter, xCurrent, yCurrent;
+    // Iterate over the board and find the king to check
     if(isChecked(color)){
-        return true;
+        for(int x = 0; x < 8; x++){
+            for(int y = 0; y < 8; y++){
+                if(this->getSquare(x,y)->getPiece()->getType() == KING && this->getSquare(x,y)->getPiece()->getColor() == color){
+                    king = this->getSquare(x,y)->getPiece();
+                    xCurrent = this->getSquare(x,y)->getPiece()->getXCoord();
+                    yCurrent = this->getSquare(x,y)->getPiece()->getYCoord();
+                    break;
+                }
+            }
+        }
+    // Iterate over kings adjacent squares to see if he can move to any of them
+    for(xIter = xCurrent - 1; xIter < (this->getSquare(xCurrent,yCurrent)->getPiece()->getXCoord() + 2); xIter++){
+        for(yIter = yCurrent - 1; yIter < (this->getSquare(xCurrent,yCurrent)->getPiece()->getYCoord() + 2); yIter++){
+            if(king->canMove(xIter, yIter, this)){
+                return false;
+            }
+            // Brute force check if theres a way to block
+            // Iterate over the board
+            for(int x = 0; x < 8; x++){
+                for(int y = 0; y < 8; y++){
+                    // Find all squares with friendly pieces
+                    if(this->getSquare(x,y)->getPiece()->getColor() == color && this->getSquare(x,y)->getPiece()->getType() != KING){
+                        // Iterate over the board
+                        for(int i = 0; i < 8; i++){
+                            for(int j = 0; j < 8; j++){
+                                // See if they can move to any of the other squares
+                                if(this->getSquare(x,y)->getPiece()->canMove(i, j, this)){
+                                    board testBoard = *this->move(x, y, i, j);
+                                    // If they can see if check goes away
+                                    if(!(testBoard.isChecked(color))){
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return true;
     }
     else{
         return false;
@@ -649,9 +695,86 @@ bool board::isCheckmate(int color){
  * Description: returns a string of ASCII characters to *
  *              enable display of the board
  * -----------------------------------------------------*/
-string board::printBoard(){
-    string currentBoard;
+void board::printBoard(){
+    char * stringToPrint;
 
+    string pieces[8][8];
+    // Iterate over the board and populate the pieces array with appropriate strings
+    for(int x = 0; x < 8; x++){
+        for(int y = 0; y < 8; y++){
+            if(this->getSquare(x,y)->getPiece()->getColor() == WHITE){
+                pieces[x][y] = "W";
+            }
+            else{
+                pieces[x][y] = "B";
+            }
+                switch(this->getSquare(x,y)->getPiece()->getType()){
+                    case PAWN:
+                        pieces[x][y] += "P";
+                        break;
+                    case ROOK:
+                        pieces[x][y] += "R";
+                        break;
+                    case KNIGHT:
+                        pieces[x][y] += "N";
+                        break;
+                    case BISHOP:
+                        pieces[x][y] += "B";
+                        break;
+                    case QUEEN:
+                        pieces[x][y] += "Q";
+                        break;
+                    case KING:
+                        pieces[x][y] += "K";
+                        break;
+                }
+        }
+    }
+
+    sprintf(stringToPrint, "#########################################################################\n"/*
+                            #        #        #        #        #        #        #        #        #\n
+                            #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #########################################################################\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #########################################################################\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #########################################################################\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #########################################################################\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #########################################################################\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #########################################################################\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #########################################################################\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #\n
+                            #        #        #        #        #        #        #        #        #\n
+                            #########################################################################\n",
+                            pieces[0][7], pieces[1][7], pieces[2][7], pieces[3][7], pieces[4][7], pieces[5][7], pieces[6][7], pieces[7][7],
+                            pieces[0][6], pieces[1][6], pieces[2][6], pieces[3][6], pieces[4][6], pieces[5][6], pieces[6][6], pieces[7][6],
+                            pieces[0][5], pieces[1][5], pieces[2][5], pieces[3][5], pieces[4][5], pieces[5][5], pieces[6][5], pieces[7][5],
+                            pieces[0][4], pieces[1][4], pieces[2][4], pieces[3][4], pieces[4][4], pieces[5][4], pieces[6][4], pieces[7][4],
+                            pieces[0][3], pieces[1][3], pieces[2][3], pieces[3][3], pieces[4][3], pieces[5][3], pieces[6][3], pieces[7][3],
+                            pieces[0][2], pieces[1][2], pieces[2][2], pieces[3][2], pieces[4][2], pieces[5][2], pieces[6][2], pieces[7][2],
+                            pieces[0][1], pieces[1][1], pieces[2][1], pieces[3][1], pieces[4][1], pieces[5][1], pieces[6][1], pieces[7][1],
+                            pieces[0][0], pieces[1][0], pieces[2][0], pieces[3][0], pieces[4][0], pieces[5][0], pieces[6][0], pieces[7][0]*/);
+                            
+    cout << stringToPrint << endl;
+    
 }
 // Piece Implementation
 
@@ -702,10 +825,10 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
         }
     }
 
-    board newBoard = theBoard->move(xCurrent, yCurrent, xNew, yNew);
+    board newBoard = *(theBoard->move(xCurrent, yCurrent, xNew, yNew));
 
     // Verify that the new square is not threatened by an enemy piece
-    if(newBoard->isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
+    if(newBoard.isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
         return false;
     }
     // Verify that the new square is within reach of the king
