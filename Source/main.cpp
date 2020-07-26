@@ -9,4 +9,6 @@ int main(){
     theBoard.initBoard();
     cout << "HELLO\n";
     theBoard.printBoard();
+
+    return 0;
 } 

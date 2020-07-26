@@ -41,35 +41,35 @@ void board::initBoard(){
                     case 0:
                     case 7:{
                     // Rooks
-                        rook whiteRook;
-                        whiteRook.initPiece(WHITE, x, y, ROOK);
-                        squareArray[x][y].initSquare(x, y, &whiteRook);
+                        rook *whiteRook = new rook();
+                        whiteRook->initPiece(WHITE, x, y, ROOK);
+                        squareArray[x][y].initSquare(x, y, whiteRook);
                     break;}
                     case 1:
                     case 6:{
                     // Knights
-                        knight whiteKnight;
-                        whiteKnight.initPiece(WHITE, x, y, KNIGHT);
-                        squareArray[x][y].initSquare(x, y, &whiteKnight);
+                        knight *whiteKnight = new knight();
+                        whiteKnight->initPiece(WHITE, x, y, KNIGHT);
+                        squareArray[x][y].initSquare(x, y, whiteKnight);
                     break;}
                     case 2:
                     case 5:{
                     // Bishops
-                        bishop whiteBishop;
-                        whiteBishop.initPiece(WHITE, x, y, BISHOP);
-                        squareArray[x][y].initSquare(x, y, &whiteBishop);
+                        bishop *whiteBishop = new bishop();
+                        whiteBishop->initPiece(WHITE, x, y, BISHOP);
+                        squareArray[x][y].initSquare(x, y, whiteBishop);
                     break;}
                     case 3:{
                     // Queen
-                        queen whiteQueen;
-                        whiteQueen.initPiece(WHITE, x, y, QUEEN);
-                        squareArray[x][y].initSquare(x, y, &whiteQueen);
+                        queen *whiteQueen = new queen();
+                        whiteQueen->initPiece(WHITE, x, y, QUEEN);
+                        squareArray[x][y].initSquare(x, y, whiteQueen);
                     break;}
                     case 4:{
                     // King
-                        king whiteKing;
-                        whiteKing.initPiece(WHITE, x, y, KING);
-                        squareArray[x][y].initSquare(x, y, &whiteKing);
+                        king *whiteKing = new king();
+                        whiteKing->initPiece(WHITE, x, y, KING);
+                        squareArray[x][y].initSquare(x, y, whiteKing);
                     break;}
                     
                 }
@@ -80,50 +80,50 @@ void board::initBoard(){
                     case 0:
                     case 7:{
                     // Rooks
-                        rook blackRook;
-                        blackRook.initPiece(BLACK, x, y, ROOK);
-                        squareArray[x][y].initSquare(x, y, &blackRook);
+                        rook *blackRook = new rook();
+                        blackRook->initPiece(BLACK, x, y, ROOK);
+                        squareArray[x][y].initSquare(x, y, blackRook);
                         break;}
                     case 1:
                     case 6:{
                     // Knights
-                        knight blackKnight;
-                        blackKnight.initPiece(BLACK, x, y, KNIGHT);
-                        squareArray[x][y].initSquare(x, y, &blackKnight);
+                        knight *blackKnight = new knight();
+                        blackKnight->initPiece(BLACK, x, y, KNIGHT);
+                        squareArray[x][y].initSquare(x, y, blackKnight);
                         break;}
                     case 2:
                     case 5:{
                     // Bishops
-                        bishop blackBishop;
-                        blackBishop.initPiece(BLACK, x, y, BISHOP);
-                        squareArray[x][y].initSquare(x, y, &blackBishop);
+                        bishop *blackBishop = new bishop();
+                        blackBishop->initPiece(BLACK, x, y, BISHOP);
+                        squareArray[x][y].initSquare(x, y, blackBishop);
                         break;}
                     case 3:{
                     // Queen
-                        queen blackQueen;
-                        blackQueen.initPiece(BLACK, x, y, QUEEN);
-                        squareArray[x][y].initSquare(x, y, &blackQueen);
+                        queen *blackQueen = new queen();
+                        blackQueen->initPiece(BLACK, x, y, QUEEN);
+                        squareArray[x][y].initSquare(x, y, blackQueen);
                         break;}
                     case 4:{
                     // King
-                        king blackKing;
-                        blackKing.initPiece(BLACK, x, y, KING);
-                        squareArray[x][y].initSquare(x, y, &blackKing);
+                        king *blackKing = new king();
+                        blackKing->initPiece(BLACK, x, y, KING);
+                        squareArray[x][y].initSquare(x, y, blackKing);
                         break;}
                     
                 }
             }
             // All y=1 squares get initialized with a white pawn
             else if(y == 1){
-                pawn whitePawn;
-                whitePawn.initPiece(WHITE, x, y, PAWN);
-                squareArray[x][y].initSquare(x, y, &whitePawn);
+                pawn *whitePawn = new pawn();
+                whitePawn->initPiece(WHITE, x, y, PAWN);
+                squareArray[x][y].initSquare(x, y, whitePawn);
             }
             // All y=6 squares get initialized with a black pawn
             else if(y == 6){
-                pawn blackPawn;
-                blackPawn.initPiece(BLACK, x, y, PAWN);
-                squareArray[x][y].initSquare(x, y, &blackPawn);
+                pawn *blackPawn = new pawn();
+                blackPawn->initPiece(BLACK, x, y, PAWN);
+                squareArray[x][y].initSquare(x, y, blackPawn);
             }
             else{
                 squareArray[x][y].initSquare(x, y, NULL);
@@ -696,7 +696,7 @@ bool board::isCheckmate(int color){
  *              enable display of the board
  * -----------------------------------------------------*/
 void board::printBoard(){
-    char * stringToPrint;
+    string stringToPrint;
 
     string pieces[8][8];
     // Iterate over the board and populate the pieces array with appropriate strings
@@ -733,7 +733,9 @@ void board::printBoard(){
         }
     }
 
-    sprintf(stringToPrint, "#########################################################################\n"/*
+    stringToPrint << "#########################################################################\n";
+    stringToPrint << "#        #        #        #        #        #        #        #        #\n";
+    stringToPrint << "#   " << pieces[0][7] << "   #   " <<
                             #        #        #        #        #        #        #        #        #\n
                             #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #   %s   #\n
                             #        #        #        #        #        #        #        #        #\n
@@ -773,10 +775,14 @@ void board::printBoard(){
                             pieces[0][3], pieces[1][3], pieces[2][3], pieces[3][3], pieces[4][3], pieces[5][3], pieces[6][3], pieces[7][3],
                             pieces[0][2], pieces[1][2], pieces[2][2], pieces[3][2], pieces[4][2], pieces[5][2], pieces[6][2], pieces[7][2],
                             pieces[0][1], pieces[1][1], pieces[2][1], pieces[3][1], pieces[4][1], pieces[5][1], pieces[6][1], pieces[7][1],
-                            pieces[0][0], pieces[1][0], pieces[2][0], pieces[3][0], pieces[4][0], pieces[5][0], pieces[6][0], pieces[7][0]*/);
+                            pieces[0][0], pieces[1][0], pieces[2][0], pieces[3][0], pieces[4][0], pieces[5][0], pieces[6][0], pieces[7][0]);
+
+
+                            
+
+    sprintf(stringToPrint, "EEEEEE");
                             
     cout << stringToPrint << endl;
-    
 }
 // Piece Implementation
 
