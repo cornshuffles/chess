@@ -702,32 +702,34 @@ void board::printBoard(){
     // Iterate over the board and populate the pieces array with appropriate strings
     for(int x = 0; x < 8; x++){
         for(int y = 0; y < 8; y++){
-            if(this->getSquare(x,y)->getPiece()->getColor() == WHITE){
-                pieces[x][y] = "W";
-            }
-            else{
-                pieces[x][y] = "B";
-            }
-                switch(this->getSquare(x,y)->getPiece()->getType()){
-                    case PAWN:
-                        pieces[x][y] += "P";
-                        break;
-                    case ROOK:
-                        pieces[x][y] += "R";
-                        break;
-                    case KNIGHT:
-                        pieces[x][y] += "N";
-                        break;
-                    case BISHOP:
-                        pieces[x][y] += "B";
-                        break;
-                    case QUEEN:
-                        pieces[x][y] += "Q";
-                        break;
-                    case KING:
-                        pieces[x][y] += "K";
-                        break;
+            if(this->getSquare(x,y)->getPiece() != NULL){
+                if(this->getSquare(x,y)->getPiece()->getColor() == WHITE){
+                    pieces[x][y] = "W";
                 }
+                else{
+                    pieces[x][y] = "B";
+                }
+                    switch(this->getSquare(x,y)->getPiece()->getType()){
+                        case PAWN:
+                            pieces[x][y] += "P";
+                            break;
+                        case ROOK:
+                            pieces[x][y] += "R";
+                            break;
+                        case KNIGHT:
+                            pieces[x][y] += "N";
+                            break;
+                        case BISHOP:
+                            pieces[x][y] += "B";
+                            break;
+                        case QUEEN:
+                            pieces[x][y] += "Q";
+                            break;
+                        case KING:
+                            pieces[x][y] += "K";
+                            break;
+                    }
+            }
         }
     }
 

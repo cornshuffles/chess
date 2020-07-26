@@ -5,5 +5,8 @@
 using namespace std; 
   
 int main(){ 
-    printf("###");
+    board theBoard;
+    theBoard.initBoard();
+    cout << "HELLO\n";
+    theBoard.printBoard();
 } 

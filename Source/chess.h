@@ -18,6 +18,7 @@ class square{
     piece *occupyingPiece;
 
     public:
+    square(){}
     void initSquare(int x, int y, piece *piece);
     piece *getPiece(){return occupyingPiece;}
     void setPiece(piece *newPiece){occupyingPiece = newPiece;}
@@ -27,6 +28,7 @@ class board{
     square squareArray[8][8];
 
     public:
+    board(){}
     void initBoard();
     square* getSquare(int x, int y);
     bool isOccupiedByColor(int x, int y, int color); // Function to return whether a given square is occupied by a specific color
@@ -54,6 +56,7 @@ class piece{
     int color; // either BLACK or WHITE
     int type; // either ROOK, KNIGHT, BISHOP, QUEEN, KING, or PAWN
     public:
+    piece(){}
     void initPiece(int color, int x, int y, int type);
     virtual bool canMove(int xNew, int yNew, board *theBoard){};
     int getXCoord(){return x;}
