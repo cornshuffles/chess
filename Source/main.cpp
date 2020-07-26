@@ -7,7 +7,7 @@ using namespace std;
 int main(){ 
     board theBoard;
     theBoard.initBoard();
-    cout << "HELLO\n";
+    cout << "\n                                  CHESS\n\n";
     theBoard.printBoard();
 
     return 0;
