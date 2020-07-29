@@ -912,7 +912,7 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
     }
     if(xNew - xCurrent > 0 && yNew - yCurrent < 0 && xDelta == yDelta){
         for(int x = xCurrent; x < xNew; x++){
-            for(int y = yCurrent; y < yNew; y--){
+            for(int y = yCurrent; y > yNew; y--){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
                     return false;
                 }
@@ -920,7 +920,7 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
         }
     }
     if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){
-        for(int x = xCurrent; x < xNew; x--){
+        for(int x = xCurrent; x > xNew; x--){
             for(int y = yCurrent; y < yNew; y++){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
                     return false;
@@ -929,8 +929,8 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
         }
     }
     if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){
-        for(int x = xCurrent; x < xNew; x--){
-            for(int y = yCurrent; y < yNew; y--){
+        for(int x = xCurrent; x > xNew; x--){
+            for(int y = yCurrent; y > yNew; y--){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
                     return false;
                 }
