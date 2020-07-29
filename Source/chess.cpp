@@ -821,12 +821,6 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
         }
     }
 
-    board newBoard = *(theBoard->move(xCurrent, yCurrent, xNew, yNew));
-
-    // Verify that the new square is not threatened by an enemy piece
-    if(newBoard.isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
-        return false;
-    }
     // Verify that the new square is within reach of the king
     int xDelta = abs(xNew - xCurrent);
     int yDelta = abs(yNew - yCurrent);
@@ -837,6 +831,15 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
         return false; // Cannot move more than one space
     }
     else{
+
+        board newBoard = *(theBoard);
+        newBoard.move(xCurrent,yCurrent, xNew, yNew);
+
+        // Verify that the new square is not threatened by an enemy piece
+        if(newBoard.isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
+            return false;
+    }
+
         moved();
         return true;
     }
