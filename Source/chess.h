@@ -63,6 +63,7 @@ class piece{
     int getYCoord(){return y;}
     int getColor(){return color;}
     int getType(){return type;}
+    virtual void moved(){};
     void setCoords(int xNew, int yNew){this->x = xNew;
                                        this->y = yNew;}
 };

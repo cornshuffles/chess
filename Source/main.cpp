@@ -9,12 +9,10 @@ int main(){
     theBoard.initBoard();
     cout << "\n                                  CHESS\n\n";
     theBoard.printBoard();
+    theBoard = *(theBoard.move(3,1,3,3));
+    theBoard.printBoard();
+    cout << theBoard.getSquare(3,3)->getPiece()->canMove(3,5, &theBoard);
 
-    for(int x = 0; x < 8; x++){
-        for(int y = 0; y < 8; y++){
-            cout << "X: " << x << " Y: " << y; 
-            cout << "\t" << theBoard.getSquare(4,0)->getPiece()->canMove(x,y,&theBoard) << endl;
-        }
-    }
+
     return 0;
 } 

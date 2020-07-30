@@ -599,10 +599,15 @@ bool board::checkNorthWest(int x, int y){
  * Description: returns a pointer to a board on which a *
  *              move has been made                      *
  * -----------------------------------------------------*/
-board* board::move(int xCurrent, int yCurrent, int xNew, int yNew){
+board *board::move(int xCurrent, int yCurrent, int xNew, int yNew){
     squareArray[xCurrent][yCurrent].getPiece()->setCoords(xNew, yNew);
     squareArray[xNew][yNew].setPiece(squareArray[xCurrent][yCurrent].getPiece());
     squareArray[xCurrent][yCurrent].setPiece(NULL);
+    if (this->getSquare(xCurrent, yCurrent)->getPiece()->getType() == PAWN ||
+        this->getSquare(xCurrent, yCurrent)->getPiece()->getType() == KING ||
+        this->getSquare(xCurrent, yCurrent)->getPiece()->getType() == ROOK){
+            this->getSquare(xCurrent, yCurrent)->getPiece()->moved();
+        }
     return this;
 }
 
@@ -840,7 +845,6 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
             return false;
     }
 
-        moved();
         return true;
     }
 }
@@ -876,35 +880,35 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
     // Verify that no pieces are in the path of movement between the current and new squares
     int xDelta = abs(xNew - xCurrent);
     int yDelta = abs(yNew - yCurrent);
-    if(xNew - xCurrent > 0 && yNew - yCurrent == 0){
+    if(xNew - xCurrent > 0 && yNew - yCurrent == 0){ // moving east
         for(int x = xCurrent; x < xNew; x++){
             if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent < 0 && yNew - yCurrent == 0){
-        for(int x = xCurrent; x < xNew; x--){
+    if(xNew - xCurrent < 0 && yNew - yCurrent == 0){ // moving west
+        for(int x = xCurrent; x > xNew; x--){
             if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent == 0 && yNew - yCurrent > 0){
+    if(xNew - xCurrent == 0 && yNew - yCurrent > 0){ // moving north
         for(int y = yCurrent; y < yNew; y++){
             if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent == 0 && yNew - yCurrent < 0){
-        for(int y = yCurrent; y < yNew; y--){
+    if(xNew - xCurrent == 0 && yNew - yCurrent < 0){ // moving south
+        for(int y = yCurrent; y > yNew; y--){
             if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent > 0 && yNew - yCurrent > 0 && xDelta == yDelta){
+    if(xNew - xCurrent > 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northeast
         for(int x = xCurrent; x < xNew; x++){
             for(int y = yCurrent; y < yNew; y++){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
@@ -913,7 +917,7 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
             }
         }
     }
-    if(xNew - xCurrent > 0 && yNew - yCurrent < 0 && xDelta == yDelta){
+    if(xNew - xCurrent > 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southeast
         for(int x = xCurrent; x < xNew; x++){
             for(int y = yCurrent; y > yNew; y--){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
@@ -922,7 +926,7 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
             }
         }
     }
-    if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){
+    if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northwest
         for(int x = xCurrent; x > xNew; x--){
             for(int y = yCurrent; y < yNew; y++){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
@@ -931,7 +935,7 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
             }
         }
     }
-    if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){
+    if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southwest
         for(int x = xCurrent; x > xNew; x--){
             for(int y = yCurrent; y > yNew; y--){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
@@ -985,7 +989,7 @@ bool bishop::canMove(int xNew, int yNew, board *theBoard){
     // Verify that there is not another piece obstructing the path between the current and new squares
     int xDelta = abs(xNew - xCurrent);
     int yDelta = abs(yNew - yCurrent);
-    if(xNew - xCurrent > 0 && yNew - yCurrent > 0 && xDelta == yDelta){
+    if(xNew - xCurrent > 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northeast
         for(int x = xCurrent; x < xNew; x++){
             for(int y = yCurrent; y < yNew; y++){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
@@ -994,7 +998,7 @@ bool bishop::canMove(int xNew, int yNew, board *theBoard){
             }
         }
     }
-    if(xNew - xCurrent > 0 && yNew - yCurrent < 0 && xDelta == yDelta){
+    if(xNew - xCurrent > 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southeast
         for(int x = xCurrent; x < xNew; x++){
             for(int y = yCurrent; y > yNew; y--){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
@@ -1003,7 +1007,7 @@ bool bishop::canMove(int xNew, int yNew, board *theBoard){
             }
         }
     }
-    if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){
+    if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northwest
         for(int x = xCurrent; x > xNew; x--){
             for(int y = yCurrent; y < yNew; y++){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
@@ -1012,7 +1016,7 @@ bool bishop::canMove(int xNew, int yNew, board *theBoard){
             }
         }
     }
-    if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){
+    if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southeast
         for(int x = xCurrent; x > xNew; x--){
             for(int y = yCurrent; y > yNew; y--){
                 if(theBoard->getSquare(x, y)->getPiece() != NULL){
@@ -1107,29 +1111,29 @@ bool rook::canMove(int xNew, int yNew, board *theBoard){
     }
 
     // Verify that there is not another piece obstructing the path between the current and new squares
-    if(xNew - xCurrent > 0 && yNew - yCurrent == 0){
+    if(xNew - xCurrent > 0 && yNew - yCurrent == 0){ // moving east
         for(int x = xCurrent; x < xNew; x++){
             if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent < 0 && yNew - yCurrent == 0){
-        for(int x = xCurrent; x < xNew; x--){
+    if(xNew - xCurrent < 0 && yNew - yCurrent == 0){ // moving west
+        for(int x = xCurrent; x > xNew; x--){
             if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent == 0 && yNew - yCurrent > 0){
+    if(xNew - xCurrent == 0 && yNew - yCurrent > 0){ // moving north
         for(int y = yCurrent; y < yNew; y++){
             if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent == 0 && yNew - yCurrent < 0){
-        for(int y = yCurrent; y < yNew; y--){
+    if(xNew - xCurrent == 0 && yNew - yCurrent < 0){ // moving south
+        for(int y = yCurrent; y > yNew; y--){
             if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
                 return false;
             }
@@ -1146,7 +1150,6 @@ bool rook::canMove(int xNew, int yNew, board *theBoard){
         return false; // Rook must stay on one row/column, so one of the deltas must be 0
     }
     else{
-        moved();
         return true;
     }
 }
@@ -1186,19 +1189,19 @@ bool pawn::canMove(int xNew, int yNew, board *theBoard){
     if(myColor == WHITE){
         (bool)myColor;
         if(xDelta == 1 && yDelta == 1 && theBoard->isOccupiedByColor(xNew,yNew,BLACK)){
-            moved();
+
             return true; // Capturing
         }
         else if(xDelta == -1 && yDelta == 1 && theBoard->isOccupiedByColor(xNew,yNew,BLACK)){
-            moved();
+
             return true; // Capturing
         }
         else if(xDelta == 0 && yDelta == 1){
-            moved();
+
             return true; 
         }
         else if(xDelta == 0 && yDelta == 2 && !hasMoved && !(theBoard->isOccupied(xNew, yNew)) && !(theBoard->isOccupied(xNew, yNew - 1))){
-            moved(); // First move allows the pawn to move 2 squares
+                        // First move allows the pawn to move 2 squares
             return true;
         }
         else{
@@ -1207,19 +1210,19 @@ bool pawn::canMove(int xNew, int yNew, board *theBoard){
     }
     else{
         if(xDelta == -1 && yDelta == -1 && theBoard->isOccupiedByColor(xNew,yNew,WHITE)){
-            moved();
+
             return true; // Capturing
         }
         else if(xDelta == 1 && yDelta == -1 && theBoard->isOccupiedByColor(xNew,yNew,WHITE)){
-            moved();
+
             return true; // Capturing
         }
         else if(xDelta == 0 && yDelta == -1){
-            moved();
+
             return true; 
         }
         else if(xDelta == 0 && yDelta == -2 && !hasMoved && !theBoard->isOccupied(xNew, yNew) && !theBoard->isOccupied(xNew, yNew + 1)){
-            moved();
+
             return true; // First move allows the pawn to move 2 squares
         }
         else{
