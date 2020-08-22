@@ -612,7 +612,7 @@ board *board::move(int xCurrent, int yCurrent, int xNew, int yNew){
 }
 
 /*------------------------------------------------------*
- * Function:    capture                                    *
+ * Function:    capture                                 *
  * Params:      int xCurrent - current x position to    *
  *                             move from                *
  *              int yCurrent - current y position to    *
