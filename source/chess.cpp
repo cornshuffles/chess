@@ -603,10 +603,10 @@ board *board::move(int xCurrent, int yCurrent, int xNew, int yNew){
     squareArray[xCurrent][yCurrent].getPiece()->setCoords(xNew, yNew);
     squareArray[xNew][yNew].setPiece(squareArray[xCurrent][yCurrent].getPiece());
     squareArray[xCurrent][yCurrent].setPiece(NULL);
-    if (this->getSquare(xCurrent, yCurrent)->getPiece()->getType() == PAWN ||
-        this->getSquare(xCurrent, yCurrent)->getPiece()->getType() == KING ||
-        this->getSquare(xCurrent, yCurrent)->getPiece()->getType() == ROOK){
-            this->getSquare(xCurrent, yCurrent)->getPiece()->moved();
+    if (this->getSquare(xNew, yNew)->getPiece()->getType() == PAWN ||
+        this->getSquare(xNew, yNew)->getPiece()->getType() == KING ||
+        this->getSquare(xNew, yNew)->getPiece()->getType() == ROOK){
+            this->getSquare(xNew, yNew)->getPiece()->moved();
         }
     return this;
 }
