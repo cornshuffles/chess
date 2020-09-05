@@ -58,7 +58,7 @@ class piece{
     public:
     piece(){}
     void initPiece(int color, int x, int y, int type);
-    virtual bool canMove(int xNew, int yNew, board *theBoard){};
+    virtual bool canMove(int xNew, int yNew, board *theBoard){return true;};
     int getXCoord(){return x;}
     int getYCoord(){return y;}
     int getColor(){return color;}

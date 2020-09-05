@@ -322,7 +322,7 @@ bool board::checkLinesOfSight(int x, int y){
 bool board::checkNorth(int x, int y){
     if(y + 1 <= 7){
         if(squareArray[x][y + 1].getPiece() == NULL){
-            checkNorth(x, y + 1);
+            return checkNorth(x, y + 1);
         }
         else{
             if(squareArray[x][y + 1].getPiece()->getType() == ROOK){
@@ -361,7 +361,7 @@ bool board::checkNorthEast(int x, int y){
     }
     if(x + 1 <= 7 && y + 1 <= 7){
         if(squareArray[x + 1][y + 1].getPiece() == NULL){
-            checkNorthEast(x + 1, y + 1);
+            return checkNorthEast(x + 1, y + 1);
         }
         else{
             if(squareArray[x + 1][y + 1].getPiece()->getType() == BISHOP){
@@ -394,7 +394,7 @@ bool board::checkNorthEast(int x, int y){
 bool board::checkEast(int x, int y){
     if(x + 1 <= 7){
         if(squareArray[x + 1][y].getPiece() == NULL){
-            checkEast(x + 1, y);
+            return checkEast(x + 1, y);
         }
         else{
             if(squareArray[x + 1][y].getPiece()->getType() == ROOK){
@@ -428,7 +428,7 @@ bool board::checkEast(int x, int y){
 bool board::checkSouthEast(int x, int y){
     if(x + 1 <= 7 && y - 1 >= 0){
         if(squareArray[x + 1][y - 1].getPiece() == NULL){
-            checkSouthEast(x + 1, y - 1);
+            return checkSouthEast(x + 1, y - 1);
         }
         else{
             if(squareArray[x + 1][y - 1].getPiece()->getType() == BISHOP){
@@ -460,7 +460,7 @@ bool board::checkSouthEast(int x, int y){
 bool board::checkSouth(int x, int y){
     if(y - 1 >= 0){
         if(squareArray[x][y - 1].getPiece() == NULL){
-            checkSouth(x, y - 1);
+            return checkSouth(x, y - 1);
         }
         else{
             if(squareArray[x][y - 1].getPiece()->getType() == ROOK){
@@ -494,7 +494,7 @@ bool board::checkSouth(int x, int y){
 bool board::checkSouthWest(int x, int y){
     if(x - 1 >= 0 && y - 1 >= 0){
         if(squareArray[x - 1][y - 1].getPiece() == NULL){
-            checkSouthWest(x - 1, y - 1);
+            return checkSouthWest(x - 1, y - 1);
         }
         else{
             if(squareArray[x - 1][y - 1].getPiece()->getType() == BISHOP){
@@ -527,7 +527,7 @@ bool board::checkSouthWest(int x, int y){
 bool board::checkWest(int x, int y){
     if(x - 1 >= 0){
         if(squareArray[x - 1][y].getPiece() == NULL){
-            checkWest(x - 1, y);
+            return checkWest(x - 1, y);
         }
         else{
             if(squareArray[x - 1][y].getPiece()->getType() == ROOK){
@@ -566,7 +566,7 @@ bool board::checkNorthWest(int x, int y){
     }
     if(x - 1 >= 0 && y + 1 <= 7){
         if(squareArray[x - 1][y + 1].getPiece() == NULL){
-            checkNorthWest(x - 1, y + 1);
+            return checkNorthWest(x - 1, y + 1);
         }
         else{
             if(squareArray[x - 1][y + 1].getPiece()->getType() == BISHOP){
@@ -627,7 +627,7 @@ board *board::move(int xCurrent, int yCurrent, int xNew, int yNew){
  * -----------------------------------------------------*/
 board* board::capture(int xCurrent, int yCurrent, int xNew, int yNew){
     squareArray[xNew][yNew].setPiece(NULL); // remove captured piece
-    this->move(xCurrent, yCurrent, xNew, yNew);
+    return this->move(xCurrent, yCurrent, xNew, yNew);
 }
 
 /*------------------------------------------------------*
