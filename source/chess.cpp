@@ -232,42 +232,42 @@ bool board::isChecked(int color){
         }
     }
      // First verify that the king is not threatened by knights
-     if(!(xCurrent + 1 > 7) || !(yCurrent + 2 > 7)){
+     if(!(xCurrent + 1 > 7 || yCurrent + 2 > 7)){
         if(isOccupied(xCurrent + 1, yCurrent + 2) && squareArray[xCurrent + 1][yCurrent + 2].getPiece()->getType() == KNIGHT){
             return true;
         }
     }
-    if(!(xCurrent + 2 > 7) || !(yCurrent + 1 > 7)){
+    if(!(xCurrent + 2 > 7 || yCurrent + 1 > 7)){
         if(isOccupied(xCurrent + 2, yCurrent + 1) && squareArray[xCurrent + 2][yCurrent + 1].getPiece()->getType() == KNIGHT){
             return true;
         }
     }
-    if(!(xCurrent + 2 > 7) || !(yCurrent - 1 < 0)){
+    if(!(xCurrent + 2 > 7 || yCurrent - 1 < 0)){
         if(isOccupied(xCurrent + 2, yCurrent - 1) && squareArray[xCurrent + 2][yCurrent - 1].getPiece()->getType() == KNIGHT){
             return true;
         }
     }
-    if(!(xCurrent + 1 > 7) || !(yCurrent - 2 < 0)){
+    if(!(xCurrent + 1 > 7 || yCurrent - 2 < 0)){
         if(isOccupied(xCurrent + 1, yCurrent - 2) && squareArray[xCurrent + 1][yCurrent - 2].getPiece()->getType() == KNIGHT){
             return true;
         }
     }
-    if(!(xCurrent - 1 < 0) || !(yCurrent - 2 < 0)){
+    if(!(xCurrent - 1 < 0 || yCurrent - 2 < 0)){
         if(isOccupied(xCurrent - 1, yCurrent - 2) && squareArray[xCurrent - 1][yCurrent - 2].getPiece()->getType() == KNIGHT){
             return true;
         }
     }
-    if(!(xCurrent - 2 < 0) || !(yCurrent - 1 < 0)){
+    if(!(xCurrent - 2 < 0 || yCurrent - 1 < 0)){
         if(isOccupied(xCurrent - 2, yCurrent - 1) && squareArray[xCurrent - 2][yCurrent - 1].getPiece()->getType() == KNIGHT){
             return true;
         }
     }
-    if(!(xCurrent - 2 < 0) || !(yCurrent + 1 > 7)){
+    if(!(xCurrent - 2 < 0 || yCurrent + 1 > 7)){
         if(isOccupied(xCurrent - 2, yCurrent + 1) && squareArray[xCurrent - 2][yCurrent + 1].getPiece()->getType() == KNIGHT){
             return true;
         }
     }
-    if(!(xCurrent - 1 < 0) || !(yCurrent + 2 > 7)){
+    if(!(xCurrent - 1 < 0 || yCurrent + 2 > 7)){
         if(isOccupied(xCurrent - 1, yCurrent + 2) && squareArray[xCurrent - 1][yCurrent + 2].getPiece()->getType() == KNIGHT){
             return true;
         }
