@@ -225,55 +225,55 @@ bool board::isChecked(int color){
     int xCurrent, yCurrent; // Current position of the specified king
     for(int x = 0; x < 8; x++){
         for(int y = 0; y < 8; y++){
-            if(squareArray[x][y].getPiece()->getType() == KING && squareArray[x][y].getPiece()->getColor() == color){
+            if(isOccupied(x, y) && squareArray[x][y].getPiece()->getType() == KING && squareArray[x][y].getPiece()->getColor() == color){
                 xCurrent = x;
                 yCurrent = y; 
             }
         }
     }
-     // First verify that the new square is not threatened by knights
+     // First verify that the king is not threatened by knights
      if(!(xCurrent + 1 > 7) || !(yCurrent + 2 > 7)){
-        if(squareArray[xCurrent + 1][yCurrent + 2].getPiece()->getType() == KNIGHT){
-            return false;
+        if(isOccupied(xCurrent + 1, yCurrent + 2) && squareArray[xCurrent + 1][yCurrent + 2].getPiece()->getType() == KNIGHT){
+            return true;
         }
     }
     if(!(xCurrent + 2 > 7) || !(yCurrent + 1 > 7)){
-        if(squareArray[xCurrent + 2][yCurrent + 1].getPiece()->getType() == KNIGHT){
-            return false;
+        if(isOccupied(xCurrent + 2, yCurrent + 1) && squareArray[xCurrent + 2][yCurrent + 1].getPiece()->getType() == KNIGHT){
+            return true;
         }
     }
     if(!(xCurrent + 2 > 7) || !(yCurrent - 1 < 0)){
-        if(squareArray[xCurrent + 2][yCurrent - 1].getPiece()->getType() == KNIGHT){
-            return false;
+        if(isOccupied(xCurrent + 2, yCurrent - 1) && squareArray[xCurrent + 2][yCurrent - 1].getPiece()->getType() == KNIGHT){
+            return true;
         }
     }
     if(!(xCurrent + 1 > 7) || !(yCurrent - 2 < 0)){
-        if(squareArray[xCurrent + 1][yCurrent - 2].getPiece()->getType() == KNIGHT){
-            return false;
+        if(isOccupied(xCurrent + 1, yCurrent - 2) && squareArray[xCurrent + 1][yCurrent - 2].getPiece()->getType() == KNIGHT){
+            return true;
         }
     }
     if(!(xCurrent - 1 < 0) || !(yCurrent - 2 < 0)){
-        if(squareArray[xCurrent - 1][yCurrent - 2].getPiece()->getType() == KNIGHT){
-            return false;
+        if(isOccupied(xCurrent - 1, yCurrent - 2) && squareArray[xCurrent - 1][yCurrent - 2].getPiece()->getType() == KNIGHT){
+            return true;
         }
     }
     if(!(xCurrent - 2 < 0) || !(yCurrent - 1 < 0)){
-        if(squareArray[xCurrent - 2][yCurrent - 1].getPiece()->getType() == KNIGHT){
-            return false;
+        if(isOccupied(xCurrent - 2, yCurrent - 1) && squareArray[xCurrent - 2][yCurrent - 1].getPiece()->getType() == KNIGHT){
+            return true;
         }
     }
     if(!(xCurrent - 2 < 0) || !(yCurrent + 1 > 7)){
-        if(squareArray[xCurrent - 2][yCurrent + 1].getPiece()->getType() == KNIGHT){
-            return false;
+        if(isOccupied(xCurrent - 2, yCurrent + 1) && squareArray[xCurrent - 2][yCurrent + 1].getPiece()->getType() == KNIGHT){
+            return true;
         }
     }
     if(!(xCurrent - 1 < 0) || !(yCurrent + 2 > 7)){
-        if(squareArray[xCurrent - 1][yCurrent + 2].getPiece()->getType() == KNIGHT){
-            return false;
+        if(isOccupied(xCurrent - 1, yCurrent + 2) && squareArray[xCurrent - 1][yCurrent + 2].getPiece()->getType() == KNIGHT){
+            return true;
         }
     }
     
-    // Verify that the new square is not threatened by any other pieces
+    // Verify that the king is not threatened by any other pieces
     if(checkLinesOfSight(xCurrent, yCurrent)){
         return false;
     }
@@ -646,7 +646,7 @@ bool board::isCheckmate(int color){
     if(isChecked(color)){
         for(int x = 0; x < 8; x++){
             for(int y = 0; y < 8; y++){
-                if(this->getSquare(x,y)->getPiece()->getType() == KING && this->getSquare(x,y)->getPiece()->getColor() == color){
+                if(isOccupied(x, y) && this->getSquare(x,y)->getPiece()->getType() == KING && this->getSquare(x,y)->getPiece()->getColor() == color){
                     king = this->getSquare(x,y)->getPiece();
                     xCurrent = this->getSquare(x,y)->getPiece()->getXCoord();
                     yCurrent = this->getSquare(x,y)->getPiece()->getYCoord();
@@ -665,7 +665,7 @@ bool board::isCheckmate(int color){
             for(int x = 0; x < 8; x++){
                 for(int y = 0; y < 8; y++){
                     // Find all squares with friendly pieces
-                    if(this->getSquare(x,y)->getPiece()->getColor() == color && this->getSquare(x,y)->getPiece()->getType() != KING){
+                    if(isOccupied(x, y) && this->getSquare(x,y)->getPiece()->getColor() == color && this->getSquare(x,y)->getPiece()->getType() != KING){
                         // Iterate over the board
                         for(int i = 0; i < 8; i++){
                             for(int j = 0; j < 8; j++){
