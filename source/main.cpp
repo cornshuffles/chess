@@ -65,6 +65,19 @@ while(true){
         else{
             cout << "Black's Turn\n";
         }
+        cout << "Enter coordinates to move from (x then y)" << endl;
+        cin >> movefrom[0] >> movefrom[1];
+        cout << "Enter coordinates to move to (x then y)" << endl;
+        cin >> moveto[0] >> moveto[1];
+        theBoard.move(movefrom[0], movefrom[1], moveto[0], moveto[1]);
+
+        if(turn == WHITE){
+            turn = BLACK;
+        }
+        else{
+            turn = WHITE;
+        }
+        theBoard.printBoard();
     }
 
 }
