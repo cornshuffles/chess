@@ -11,7 +11,7 @@ using namespace std;
 int main(){ 
 
 // Logo Sequence
-ifstream logoReader ("logo.txt");
+ifstream logoReader("logo.txt");
 
 char c = logoReader.get();
 
@@ -20,7 +20,7 @@ cout << "\033[2J\033[1;1H";
 
 // Logo
 if(logoReader.good() == false){
-    cout << "CHESSBOY 9000";
+    cout << "CHESSBOY9000";
 }
 while(logoReader.good()){
     cout << c;
@@ -35,18 +35,18 @@ for(int i = 0; i < 5; i++){
 logoReader.close();
 
 // Game Sequence
-string escape;
+char escape = 'x';
 while(true){
 
-    cout << "\t\t\tNew Game? (Y/N)\n\t\t\t\t";
+    cout << "New Game? (Y/N)\n";
     // Sanitize input
-    while(escape != "Y" && escape != "y" && escape != "N" && escape != "n"){
+    while(escape != 'Y' && escape != 'y' && escape != 'N' && escape != 'n'){
         cin >> escape;
     }
 
-    // Break if no new game desired
-    if(escape != "Y" && escape != "y"){
-        break;
+    // Exit if no new game desired
+    if(escape != 'Y' && escape != 'y'){
+        return 0;
     }
 
     // Initialize the board
@@ -54,33 +54,39 @@ while(true){
     theBoard.initBoard();
     theBoard.printBoard();
     int turn = WHITE;
-    int movefrom[2];
-    int moveto[2];
+    int moveFrom[2];
+    int moveTo[2];
 
+    // While there isn't a checkmate get the next move
     while(theBoard.isCheckmate(WHITE) == false && theBoard.isCheckmate(BLACK) == false){
         // Print who's turn it is.
-        if(turn == WHITE){
-            cout << "White's Turn\n";
-        }
-        else{
-            cout << "Black's Turn\n";
-        }
-        cout << "Enter coordinates to move from (x then y)" << endl;
-        cin >> movefrom[0] >> movefrom[1];
-        cout << "Enter coordinates to move to (x then y)" << endl;
-        cin >> moveto[0] >> moveto[1];
-        theBoard.move(movefrom[0], movefrom[1], moveto[0], moveto[1]);
+        printTurn(turn);
+        // Get move
+        getMove(moveFrom, moveTo);
 
-        if(turn == WHITE){
+        // Verify that the move is a valid move - moveFrom and moveTo are both valid squares, moveFrom has a friendly piece on it, and the selected piece can move to the selected destination
+        while((!isSquareOnBoard(moveFrom[0], moveFrom[1]) || !isSquareOnBoard(moveTo[0], moveTo[1])) || !(theBoard.isOccupiedByColor(moveFrom[0], moveFrom[1], turn))  || !(theBoard.getSquare(moveFrom[0], moveFrom[1])->getPiece()->canMove(moveTo[0], moveTo[1], &theBoard))){
+            printClearBoard(&theBoard);
+            cout << "Invalid move!\n";
+            // Print who's turn it is
+            printTurn(turn);
+            // Get new move
+            getMove(moveFrom, moveTo);
+        }
+        // Move once a valid move is entered
+        theBoard.move(moveFrom[0], moveFrom[1], moveTo[0], moveTo[1]);
+
+        // Toggle the turn
+        if(turn){
             turn = BLACK;
         }
         else{
             turn = WHITE;
         }
+        cout << "\033[2J\033[1;1H";
         theBoard.printBoard();
     }
 
 }
-
 return 0;
 } 

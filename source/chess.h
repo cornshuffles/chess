@@ -11,8 +11,30 @@
 #define KING    6
 #define PAWN    7
 
-class piece;
+#include <cstddef>
 
+// Prototypes
+class piece;
+struct node;
+
+// Linked List Declaration
+class linkedList{
+    node *head;
+    node *tail;
+
+    public:
+    linkedList(){
+        head = NULL;
+        tail = NULL;
+    }
+    void insert(int piece);
+};
+
+struct node{
+    int piece;
+    node *next;
+};
+// Square/Board Class Declarations
 class square{
     int x,y;
     piece *occupyingPiece;
@@ -26,6 +48,8 @@ class square{
 
 class board{
     square squareArray[8][8];
+    linkedList whiteCaptures; // Pieces captured by white
+    linkedList blackCaptures; // Pieces captured by black
 
     public:
     board(){}
@@ -46,10 +70,11 @@ class board{
     bool checkWest(int x, int y); // Function recursively checks west line of sight for threats
     bool checkNorthWest(int x, int y); // Function recursively checks north-west line of sight for threats
     board* move(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to the board with a move made
-    board* capture(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to the board with a capturingn move made
+    void capture(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to the board with a capturingn move made
     void printBoard();
 };
 
+// Piece Class Declarations
 // Base Piece Class
 class piece{
     int x,y;
@@ -106,5 +131,10 @@ class pawn:public piece{
     void moved(){hasMoved = true;}
 };
 
+// Utility function prototypes
+bool isSquareOnBoard(int x, int y);
+void printTurn(int turn);
+void printClearBoard(board *theBoard);
+void getMove(int *moveFrom, int *moveTo);
 
 #endif
