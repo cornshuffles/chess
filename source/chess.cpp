@@ -1067,96 +1067,102 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
 bool queen::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
+    int xDelta = abs(xNew - xCurrent);
+    int yDelta = abs(yNew - yCurrent);
 
     // Verify that the new location is a valid board location
     if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
-
     // Verify that the new square is not occupied by a friendly piece
-    if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
+    else if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
         if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
             return false;
         }
     }
+    // Verify that the new Square is within reach of the queen
+    else if(xDelta == 0 && yDelta == 0){
+        return false; // Cannot move to the same space 
+    }
+    else if(xDelta != yDelta && xDelta != 0 && yDelta != 0){
+        return false; // If not lateral, both deltas must have same magnitude to stay on the correct diagonal
+    }
     // Verify that no pieces are in the path of movement between the current and new squares
-    int xDelta = abs(xNew - xCurrent);
-    int yDelta = abs(yNew - yCurrent);
-    if(xNew - xCurrent > 0 && yNew - yCurrent == 0){ // moving east
+    else if(xNew - xCurrent > 0 && yNew - yCurrent == 0){ // moving east
         for(int x = xCurrent + 1; x < xNew; x++){
             if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent < 0 && yNew - yCurrent == 0){ // moving west
+    else if(xNew - xCurrent < 0 && yNew - yCurrent == 0){ // moving west
         for(int x = xCurrent - 1; x > xNew; x--){
             if(theBoard->getSquare(x, yCurrent)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent == 0 && yNew - yCurrent > 0){ // moving north
+    else if(xNew - xCurrent == 0 && yNew - yCurrent > 0){ // moving north
         for(int y = yCurrent + 1; y < yNew; y++){
             if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent == 0 && yNew - yCurrent < 0){ // moving south
+    else if(xNew - xCurrent == 0 && yNew - yCurrent < 0){ // moving south
         for(int y = yCurrent - 1; y > yNew; y--){
             if(theBoard->getSquare(xCurrent, y)->getPiece() != NULL){
                 return false;
             }
         }
     }
-    if(xNew - xCurrent > 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northeast
-        for(int x = xCurrent + 1; x < xNew; x++){
-            for(int y = yCurrent + 1; y < yNew; y++){
-                if(theBoard->getSquare(x, y)->getPiece() != NULL){
-                    return false;
-                }
+    else if(xNew - xCurrent > 0 && yNew - yCurrent > 0){ // moving northeast
+        int x = xCurrent + 1;
+        int y = yCurrent + 1;
+        for(int it = 0; it < xDelta; it++){
+            if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                return false;
             }
+            xCurrent++;
+            yCurrent++;
         }
     }
-    if(xNew - xCurrent > 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southeast
-        for(int x = xCurrent + 1; x < xNew; x++){
-            for(int y = yCurrent - 1; y > yNew; y--){
-                if(theBoard->getSquare(x, y)->getPiece() != NULL){
-                    return false;
-                }
+    else if(xNew - xCurrent > 0 && yNew - yCurrent < 0){ // moving southeast
+        int x = xCurrent + 1;
+        int y = yCurrent - 1;
+        for(int it = 0; it < xDelta; it++){
+            if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                return false;
             }
+            xCurrent++;
+            yCurrent--;
         }
     }
-    if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northwest
-        for(int x = xCurrent - 1; x > xNew; x--){
-            for(int y = yCurrent + 1; y < yNew; y++){
-                if(theBoard->getSquare(x, y)->getPiece() != NULL){
-                    return false;
-                }
+    else if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northwest
+        int x = xCurrent - 1;
+        int y = yCurrent + 1;
+        for(int it = 0; it < xDelta; it++){
+            if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                return false;
             }
+            xCurrent--;
+            yCurrent++;
         }
     }
-    if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southwest
-        for(int x = xCurrent - 1; x > xNew; x--){
-            for(int y = yCurrent - 1; y > yNew; y--){
-                if(theBoard->getSquare(x, y)->getPiece() != NULL){
-                    return false;
-                }
+    else if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southwest
+        int x = xCurrent - 1;
+        int y = yCurrent - 1;
+        for(int it = 0; it < xDelta; it++){
+            if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                return false;
             }
+            xCurrent--;
+            yCurrent--;
         }
     }
 
-    // Verify that the new Square is within reach of the queen
-    if(xDelta == 0 && yDelta == 0){
-        return false; // Cannot move to the same space 
-    }
-    else if(xDelta != yDelta && xDelta != 0 && yDelta != 0){
-        return false; // If not lateral, both deltas must have same magnitude to stay on the correct diagonal
-    }
-    else{
-        return true;
-    }
+    // If the move hasn't been invalidated by now then it must be valid
+    return true;
 }
 
 /*------------------------------------------------------*
@@ -1175,69 +1181,74 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
 bool bishop::canMove(int xNew, int yNew, board *theBoard){
     int xCurrent = getXCoord();
     int yCurrent = getYCoord();
+    int xDelta = abs(xNew - xCurrent);
+    int yDelta = abs(yNew - yCurrent);
 
     // Verify that the new location is a valid board location
     if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
-
     // Verify that the new square is not occupied by a friendly piece
-    if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
+    else if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
         if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
             return false;
         }
     }
-
-    // Verify that there is not another piece obstructing the path between the current and new squares
-    int xDelta = abs(xNew - xCurrent);
-    int yDelta = abs(yNew - yCurrent);
-    if(xNew - xCurrent > 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northeast
-        for(int x = xCurrent + 1; x < xNew; x++){
-            for(int y = yCurrent + 1; y < yNew; y++){
-                if(theBoard->getSquare(x, y)->getPiece() != NULL){
-                    return false;
-                }
-            }
-        }
-    }
-    if(xNew - xCurrent > 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southeast
-        for(int x = xCurrent + 1; x < xNew; x++){
-            for(int y = yCurrent - 1; y > yNew; y--){
-                if(theBoard->getSquare(x, y)->getPiece() != NULL){
-                    return false;
-                }
-            }
-        }
-    }
-    if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northwest
-        for(int x = xCurrent - 1; x > xNew; x--){
-            for(int y = yCurrent + 1; y < yNew; y++){
-                if(theBoard->getSquare(x, y)->getPiece() != NULL){
-                    return false;
-                }
-            }
-        }
-    }
-    if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southeast
-        for(int x = xCurrent + 1; x > xNew; x--){
-            for(int y = yCurrent - 1; y > yNew; y--){
-                if(theBoard->getSquare(x, y)->getPiece() != NULL){
-                    return false;
-                }
-            }
-        }
-    }
-
     // Verify that the new Square is within reach of the bishop
-    if(xDelta == 0 || yDelta == 0){
+    else if(xDelta == 0 || yDelta == 0){
         return false; // Cannot move to the same space or laterally
     }
+    // Both deltas must have same magnitude to stay on the correct diagonal
     else if(xDelta != yDelta){
-        return false; // Both deltas must have same magnitude to stay on the correct diagonal
+        return false;
     }
-    else{
-        return true;
+    // Verify that there is not another piece obstructing the path between the current and new squares
+    else if(xNew - xCurrent > 0 && yNew - yCurrent > 0){ // moving northeast
+        int x = xCurrent + 1;
+        int y = yCurrent + 1;
+        for(int it = 0; it < xDelta; it++){
+            if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                return false;
+            }
+            xCurrent++;
+            yCurrent++;
+        }
     }
+    else if(xNew - xCurrent > 0 && yNew - yCurrent < 0){ // moving southeast
+        int x = xCurrent + 1;
+        int y = yCurrent - 1;
+        for(int it = 0; it < xDelta; it++){
+            if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                return false;
+            }
+            xCurrent++;
+            yCurrent--;
+        }
+    }
+    else if(xNew - xCurrent < 0 && yNew - yCurrent > 0 && xDelta == yDelta){ // moving northwest
+        int x = xCurrent - 1;
+        int y = yCurrent + 1;
+        for(int it = 0; it < xDelta; it++){
+            if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                return false;
+            }
+            xCurrent--;
+            yCurrent++;
+        }
+    }
+    else if(xNew - xCurrent < 0 && yNew - yCurrent < 0 && xDelta == yDelta){ // moving southwest
+        int x = xCurrent - 1;
+        int y = yCurrent - 1;
+        for(int it = 0; it < xDelta; it++){
+            if(theBoard->getSquare(x, y)->getPiece() != NULL){
+                return false;
+            }
+            xCurrent--;
+            yCurrent--;
+        }
+    }
+    // If the move hasn't been invalidated by now then it must be valid
+    return true;
 }
 
 /*------------------------------------------------------*
