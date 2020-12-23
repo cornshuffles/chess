@@ -60,15 +60,15 @@ class board{
     bool isOccupiedByPiece(int x, int y, int type); // Function to return whether a given square is occupied by a given piece
     bool isChecked(int color); // Function returning a bool indicating whether the given color is in check
     bool isCheckmate(int color); // Function returning a bool indicating if the given color is checkmated
-    bool checkLinesOfSight(int x, int y); // Function recursively checks lines of sight from given point for non-knight threats
-    bool checkNorth(int x, int y); // Function recursively checks north line of sight for threats
-    bool checkNorthEast(int x, int y); // Function recursively checks north-east line of sight for threats
-    bool checkEast(int x, int y); // Function recursively checks east line of sight for threats
-    bool checkSouthEast(int x, int y); // Function recursively checks south-east line of sight for threats
-    bool checkSouth(int x, int y); // Function recursively checks south line of sight for threats
-    bool checkSouthWest(int x, int y); // Function recursively checks south-west line of sight for threats
-    bool checkWest(int x, int y); // Function recursively checks west line of sight for threats
-    bool checkNorthWest(int x, int y); // Function recursively checks north-west line of sight for threats
+    bool checkLinesOfSight(int x, int y, int enemyColor); // Function recursively checks lines of sight from given point for non-knight threats
+    bool checkNorth(int x, int y, int enemyColor); // Function recursively checks north line of sight for threats
+    bool checkNorthEast(int x, int y, int enemyColor); // Function recursively checks north-east line of sight for threats
+    bool checkEast(int x, int y, int enemyColor); // Function recursively checks east line of sight for threats
+    bool checkSouthEast(int x, int y, int enemyColor); // Function recursively checks south-east line of sight for threats
+    bool checkSouth(int x, int y, int enemyColor); // Function recursively checks south line of sight for threats
+    bool checkSouthWest(int x, int y, int enemyColor); // Function recursively checks south-west line of sight for threats
+    bool checkWest(int x, int y, int enemyColor); // Function recursively checks west line of sight for threats
+    bool checkNorthWest(int x, int y, int enemyColor); // Function recursively checks north-west line of sight for threats
     board* move(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to the board with a move made
     void capture(int xCurrent, int yCurrent, int xNew, int yNew); // Function to return a pointer to the board with a capturingn move made
     void printBoard();
