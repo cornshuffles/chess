@@ -506,6 +506,7 @@ bool board::checkLinesOfSight(int x, int y, int enemyColor){
         return true;
     }
 }
+
 /*------------------------------------------------------*
  * Function:    checkNorth                              *
  * Params:      int x - x position to check from        *

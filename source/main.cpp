@@ -35,23 +35,25 @@ for(int i = 0; i < 5; i++){
 logoReader.close();
 
 // Game Sequence
-char escape = 'x';
+string escape = "x";
 while(true){
 
     cout << "New Game? (Y/N)\n";
     // Sanitize input
-    while(escape != 'Y' && escape != 'y' && escape != 'N' && escape != 'n'){
+    while(escape != "Y" && escape != "y" && escape != "N" && escape != "n"){
         cin >> escape;
     }
 
     // Exit if no new game desired
-    if(escape != 'Y' && escape != 'y'){
+    if(escape != "Y" && escape != "y"){
         return 0;
     }
 
     // Initialize the board
     board theBoard;
     theBoard.initBoard();
+    // Clear Screen
+    cout << "\033[2J\033[1;1H";
     theBoard.printBoard();
     int turn = WHITE;
     int moveFrom[2];
