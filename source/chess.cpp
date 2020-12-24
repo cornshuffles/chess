@@ -90,6 +90,10 @@ void getMove(int *moveFrom, int *moveTo){
     if(input.length() == 1){
         moveFrom[0] = input[0] - '0';
         cin >> moveFrom[1];
+        if(moveFrom[0] < 0 || moveFrom[0] > 7 || moveFrom[1] < 0 || moveFrom[1] > 7){
+            moveFrom[0] = 8;
+            moveFrom[1] = 8; 
+        }
     }
     // Coordinates being entered alpha-numerically
     else if(input.length() == 2){
@@ -195,7 +199,6 @@ void getMove(int *moveFrom, int *moveTo){
         moveTo[1] = 8; // Out of bounds square
     }
 }
-
 
 // Board Implementation
 
@@ -879,28 +882,29 @@ bool board::isCheckmate(int color){
             }
         }
     // Iterate over kings adjacent squares to see if he can move to any of them
-    for(xIter = xCurrent - 1; xIter < (this->getSquare(xCurrent,yCurrent)->getPiece()->getXCoord() + 2); xIter++){
-        for(yIter = yCurrent - 1; yIter < (this->getSquare(xCurrent,yCurrent)->getPiece()->getYCoord() + 2); yIter++){
+    for(xIter = xCurrent - 1; xIter < (xCurrent + 2); xIter++){
+        for(yIter = yCurrent - 1; yIter < (yCurrent + 2); yIter++){
             if(king->canMove(xIter, yIter, this)){
                 return false;
             }
-            // Brute force check if theres a way to block
-            // Iterate over the board
-            for(int x = 0; x < 8; x++){
-                for(int y = 0; y < 8; y++){
-                    // Find all squares with friendly pieces
-                    if(isOccupied(x, y) && this->getSquare(x,y)->getPiece()->getColor() == color && this->getSquare(x,y)->getPiece()->getType() != KING){
-                        // Iterate over the board
-                        for(int i = 0; i < 8; i++){
-                            for(int j = 0; j < 8; j++){
-                                // See if they can move to any of the other squares
-                                if(this->getSquare(x,y)->getPiece()->canMove(i, j, this)){
-                                    board testBoard = *this->move(x, y, i, j);
-                                    // If they can see if check goes away
-                                    if(!(testBoard.isChecked(color))){
-                                        return false;
-                                    }
-                                }
+        }
+    }
+    // Brute force check if theres a way to block
+    // Iterate over the board
+    for(int x = 0; x < 8; x++){
+        for(int y = 0; y < 8; y++){
+            // Find all squares with friendly pieces
+            if(isOccupied(x, y) && this->getSquare(x,y)->getPiece()->getColor() == color && this->getSquare(x,y)->getPiece()->getType() != KING){
+                // Iterate over the board
+                for(int i = 0; i < 8; i++){
+                    for(int j = 0; j < 8; j++){
+                        // See if they can move to any of the other squares
+                        if(this->getSquare(x,y)->getPiece()->canMove(i, j, this)){
+                            board testBoard = *this;
+                            testBoard.move(x, y, i, j);
+                            // If they can see if check goes away
+                            if(!(testBoard.isChecked(color))){
+                                return false;
                             }
                         }
                     }
