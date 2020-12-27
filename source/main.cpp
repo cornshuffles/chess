@@ -35,9 +35,10 @@ for(int i = 0; i < 5; i++){
 logoReader.close();
 
 // Game Sequence
-string escape = "x";
 while(true){
 
+    string escape = "x";
+    
     cout << "New Game? (Y/N)\n";
     // Sanitize input
     while(escape != "Y" && escape != "y" && escape != "N" && escape != "n"){

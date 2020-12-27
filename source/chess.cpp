@@ -97,7 +97,7 @@ void getMove(int *moveFrom, int *moveTo){
     }
     // Coordinates being entered alpha-numerically
     else if(input.length() == 2){
-        switch (input[0]){
+        switch(input[0]){
             case 'A':
             case 'a':
                 moveFrom[0] = 0;
@@ -153,7 +153,7 @@ void getMove(int *moveFrom, int *moveTo){
     }
     // Coordinates being entered alpha-numerically
     else if(input.length() == 2){
-        switch (input[0]){
+        switch(input[0]){
             case 'A':
             case 'a':
                 moveTo[0] = 0;
@@ -200,6 +200,67 @@ void getMove(int *moveFrom, int *moveTo){
     }
 }
 
+/*----------------------------------------------------------*
+ * Function:    copyBoard                                   *
+ * Params:      board* boardToCopy - pointer to the board   *
+ *                                   to copy                *
+ * Returns: board* - the copied board                       *
+ * Description: Creates a new board object identical to the *
+ *              one passed in, with new piece objects then  *
+ *              returns a pointer to it                     *
+ * ---------------------------------------------------------*/
+board *copyBoard(board *boardToCopy){
+    board *boardToReturn = new board();
+    
+    // Iterate over boardToCopy and create copies of its piece objects to place onto the new board object
+    for(int x = 0; x < 8; x++){
+        for(int y = 0; y < 8; y++){
+            if(boardToCopy->isOccupied(x,y)){
+                switch(boardToCopy->getSquare(x,y)->getPiece()->getType()){
+                    case PAWN:{
+                            pawn *newPawn = new pawn();
+                            newPawn->initPiece(boardToCopy->getSquare(x,y)->getPiece()->getColor(), x, y, PAWN);
+                            boardToReturn->getSquare(x, y)->initSquare(x, y, newPawn);
+                            break;}
+                        case ROOK:{
+                            rook *newRook = new rook();
+                            newRook->initPiece(boardToCopy->getSquare(x,y)->getPiece()->getColor(), x, y, ROOK);
+                            boardToReturn->getSquare(x, y)->initSquare(x, y, newRook);
+                            break;}
+                        case KNIGHT:{
+                            knight *newKnight = new knight();
+                            newKnight->initPiece(boardToCopy->getSquare(x,y)->getPiece()->getColor(), x, y, KNIGHT);
+                            boardToReturn->getSquare(x, y)->initSquare(x, y, newKnight);
+                            break;}
+                        case BISHOP:{
+                            bishop *newBishop = new bishop();
+                            newBishop->initPiece(boardToCopy->getSquare(x,y)->getPiece()->getColor(), x, y, BISHOP);
+                            boardToReturn->getSquare(x, y)->initSquare(x, y, newBishop);
+                            break;}
+                        case QUEEN:{
+                            queen *newQueen = new queen();
+                            newQueen->initPiece(boardToCopy->getSquare(x,y)->getPiece()->getColor(), x, y, QUEEN);
+                            boardToReturn->getSquare(x, y)->initSquare(x, y, newQueen);
+                            break;}
+                        case KING:{
+                            king *newKing = new king();
+                            newKing->initPiece(boardToCopy->getSquare(x,y)->getPiece()->getColor(), x, y, KING);
+                            boardToReturn->getSquare(x, y)->initSquare(x, y, newKing);
+                            break;}
+                        default:{
+                            boardToReturn->getSquare(x, y)->initSquare(x, y, NULL);
+                            break;
+                        }
+                }
+            }
+            else{
+                boardToReturn->getSquare(x, y)->initSquare(x, y, NULL);
+            }
+        }
+    }
+    return boardToReturn;
+}
+
 // Board Implementation
 
 /*----------------------------------------------------------*
@@ -231,7 +292,7 @@ void board::initBoard(){
         for(int y = 0; y < 8; y++){
             // White home row
             if(y == 0){
-                switch (x){
+                switch(x){
                     case 0:
                     case 7:{
                     // Rooks
@@ -270,7 +331,7 @@ void board::initBoard(){
             }
             // Black home row
             else if(y == 7){
-                switch (x){
+                switch(x){
                     case 0:
                     case 7:{
                     // Rooks
@@ -337,7 +398,7 @@ void board::initBoard(){
  *              specified by the params                 *
  * -----------------------------------------------------*/
  square* board::getSquare(int x, int y){
-     return &squareArray[x][y];
+    return &squareArray[x][y];
  }
 
 /*------------------------------------------------------*
@@ -870,10 +931,10 @@ bool board::isCheckmate(int color){
     if(isChecked(color)){
         for(int x = 0; x < 8; x++){
             for(int y = 0; y < 8; y++){
-                if(isOccupied(x, y) && this->getSquare(x,y)->getPiece()->getType() == KING && this->getSquare(x,y)->getPiece()->getColor() == color){
+                if(isOccupiedByPiece(x, y, KING) && isOccupiedByColor(x, y, color)){
                     king = this->getSquare(x,y)->getPiece();
-                    xCurrent = this->getSquare(x,y)->getPiece()->getXCoord();
-                    yCurrent = this->getSquare(x,y)->getPiece()->getYCoord();
+                    xCurrent = x;
+                    yCurrent = y;
                     breakFlag = true;
                 }
             }
@@ -894,16 +955,17 @@ bool board::isCheckmate(int color){
     for(int x = 0; x < 8; x++){
         for(int y = 0; y < 8; y++){
             // Find all squares with friendly pieces
-            if(isOccupied(x, y) && this->getSquare(x,y)->getPiece()->getColor() == color && this->getSquare(x,y)->getPiece()->getType() != KING){
+            if(isOccupiedByColor(x, y, color) && this->getSquare(x,y)->getPiece()->getType() != KING){
                 // Iterate over the board
                 for(int i = 0; i < 8; i++){
                     for(int j = 0; j < 8; j++){
                         // See if they can move to any of the other squares
                         if(this->getSquare(x,y)->getPiece()->canMove(i, j, this)){
-                            board testBoard = *this;
-                            testBoard.move(x, y, i, j);
+                            board *testBoard;
+                            testBoard = copyBoard(this);
+                            testBoard->move(x, y, i, j);
                             // If they can see if check goes away
-                            if(!(testBoard.isChecked(color))){
+                            if(!(testBoard->isChecked(color))){
                                 return false;
                             }
                         }
@@ -1061,13 +1123,13 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
     if(xDelta >= 2 || yDelta >= 2){
         return false; // Cannot move more than one space
     }
-    // If nothing else has returned false check it the new location puts the king in check
+    // If nothing else has returned false check if the new location puts the king in check
     else{
-        board newBoard = *(theBoard);
-        newBoard.move(xCurrent,yCurrent, xNew, yNew);
+        board *testBoard = copyBoard(theBoard);
+        testBoard->move(xCurrent,yCurrent, xNew, yNew);
 
         // Verify that the new square is not threatened by an enemy piece
-        if(newBoard.isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
+        if(testBoard->isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
             return false;
         }
     }
