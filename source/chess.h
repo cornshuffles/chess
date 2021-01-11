@@ -135,7 +135,7 @@ class pawn:public piece{
 bool isSquareOnBoard(int x, int y);
 void printTurn(int turn);
 void printClearBoard(board *theBoard);
-void getMove(int *moveFrom, int *moveTo);
+void getMove(int *moveFrom, int *moveTo, board *theBoard, int color);
 board *copyBoard(board *boardToCopy);
 
 #endif

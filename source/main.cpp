@@ -44,7 +44,8 @@ while(true){
     while(escape != "Y" && escape != "y" && escape != "N" && escape != "n"){
         cin >> escape;
     }
-
+    // clear cin buffer
+    cin.ignore(256, '\n');
     // Exit if no new game desired
     if(escape != "Y" && escape != "y"){
         return 0;
@@ -65,17 +66,8 @@ while(true){
         // Print who's turn it is.
         printTurn(turn);
         // Get move
-        getMove(moveFrom, moveTo);
-
-        // Verify that the move is a valid move - moveFrom and moveTo are both valid squares, moveFrom has a friendly piece on it, and the selected piece can move to the selected destination
-        while((!isSquareOnBoard(moveFrom[0], moveFrom[1]) || !isSquareOnBoard(moveTo[0], moveTo[1])) || !(theBoard.isOccupiedByColor(moveFrom[0], moveFrom[1], turn))  || !(theBoard.getSquare(moveFrom[0], moveFrom[1])->getPiece()->canMove(moveTo[0], moveTo[1], &theBoard))){
-            printClearBoard(&theBoard);
-            cout << "Invalid move!\n";
-            // Print who's turn it is
-            printTurn(turn);
-            // Get new move
-            getMove(moveFrom, moveTo);
-        }
+        getMove(moveFrom, moveTo, &theBoard, turn);
+        
         // Move once a valid move is entered
         theBoard.move(moveFrom[0], moveFrom[1], moveTo[0], moveTo[1]);
 

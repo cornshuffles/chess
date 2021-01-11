@@ -69,134 +69,115 @@ void printClearBoard(board *theBoard){
 }
 
 /*----------------------------------------------------------*
- * Function:    getMove                                     *
- * Params:      int *moveFrom - int array to store move     *
- *                              from coordinates in         *
- *              int *moveTo - int array to store move to    *
- *                            coordinates in                *
+ * Function:    getMoveSquare                               *
+ * Params:      int *square - int array to store move       *
+ *                             coordinates in               *
  * Returns: void                                            *
  * Description: Gets coordinates for a move from stdin.     *
  *              Supports coordinates being entered one at a *
  * time numerically, or coordinates being entered as a pair *
  * alphanumerically                                         *
  * ---------------------------------------------------------*/
-void getMove(int *moveFrom, int *moveTo){
+bool getMoveSquare(int *square){
     string input;
-
-    // Get coordinates to move from
-    cout << "Enter coordinates to move from (x then y)" << endl;
-    cin >> input;
-    // Coordinates being entered numerically
-    if(input.length() == 1){
-        moveFrom[0] = input[0] - '0';
-        cin >> moveFrom[1];
-        if(moveFrom[0] < 0 || moveFrom[0] > 7 || moveFrom[1] < 0 || moveFrom[1] > 7){
-            moveFrom[0] = 8;
-            moveFrom[1] = 8; 
+    getline(cin, input);
+    // verify length is less than 3
+    if(input.length() > 2 || input.length() < 1){ 
+        return false;
+    }
+    // numerical entering
+    else if(input.length() == 1){
+        if(input[0] < 48 || input[0] > 55){
+            return false;
+        }
+        square[0] = input[0] - '0';
+        getline(cin, input);
+        if(input.length() != 1 || input[0] < 48 || input[0] > 55){
+            return false;
+        }
+        else{
+            square[1] = input[0] - '0';
+            return true;
         }
     }
-    // Coordinates being entered alpha-numerically
-    else if(input.length() == 2){
-        switch(input[0]){
+    // alphanumerical entering
+    else{
+        // verify column (capital or lower case A-H)
+        if(input[0] < 65 || (input[0] > 72 && input[0] < 97) || input[0] > 104){
+            return false;
+        }
+        // verify row (int 1-8)
+        else if(input[1] < 49 || input[1] > 56) {
+            return false;
+        }
+        else{
+            switch(input[0]){
             case 'A':
             case 'a':
-                moveFrom[0] = 0;
+                square[0] = 0;
                 break;
             case 'B':
             case 'b':
-                moveFrom[0] = 1;
+                square[0] = 1;
                 break;
             case 'C':
             case 'c':
-                moveFrom[0] = 2;
+                square[0] = 2;
                 break;
             case 'D':
             case 'd':
-                moveFrom[0] = 3;
+                square[0] = 3;
                 break;
             case 'E':
             case 'e':
-                moveFrom[0] = 4;
+                square[0] = 4;
                 break;
             case 'F':
             case 'f':
-                moveFrom[0] = 5;
+                square[0] = 5;
                 break;
             case 'G':
             case 'g':
-                moveFrom[0] = 6;
+                square[0] = 6;
                 break;
             case 'H':
             case 'h':
-                moveFrom[0] = 7;
+                square[0] = 7;
                 break;
             default:
-                moveFrom[0] = 8; // Out of bounds square
+                square[0] = 8; // Out of bounds square
                 break;
+            }
+
+            square[1] = (input[1] - '0') - 1;
+            return true;
         }
-
-        moveFrom[1] = (input[1] - '0') - 1;
-    }
-    // Input format not supported
-    else{
-        moveFrom[0] = 8; // Out of bounds square
-        moveFrom[1] = 8; // Out of bounds square
     }
 
-    // Get coordinates to move to
-    cout << "Enter coordinates to move to (x then y)" << endl;
-    cin >> input;
-    // Coordinates being entered numerically
-    if(input.length() == 1){
-        moveTo[0] = input[0] - '0';
-        cin >> moveTo[1];
-    }
-    // Coordinates being entered alpha-numerically
-    else if(input.length() == 2){
-        switch(input[0]){
-            case 'A':
-            case 'a':
-                moveTo[0] = 0;
-                break;
-            case 'B':
-            case 'b':
-                moveTo[0] = 1;
-                break;
-            case 'C':
-            case 'c':
-                moveTo[0] = 2;
-                break;
-            case 'D':
-            case 'd':
-                moveTo[0] = 3;
-                break;
-            case 'E':
-            case 'e':
-                moveTo[0] = 4;
-                break;
-            case 'F':
-            case 'f':
-                moveTo[0] = 5;
-                break;
-            case 'G':
-            case 'g':
-                moveTo[0] = 6;
-                break;
-            case 'H':
-            case 'h':
-                moveTo[0] = 7;
-                break;
-            default:
-                moveTo[0] = 8; // Out of bounds square
-                break;
-        }
+}
 
-        moveTo[1] = (input[1] - '0') - 1;
+/*----------------------------------------------------------*
+ * Function:    getMove                                     *
+ * Params:      int *moveFrom - int array to store move     *
+ *                              from coordinates in         *
+ *              int *moveTo - int array to store move to    *
+ *                            coordinates in                *
+ *              int color - the color of piece to move
+ * Returns: void                                            *
+ * Description: Gets coordinates for a move from stdin.     *
+ *              Supports coordinates being entered one at a *
+ * time numerically, or coordinates being entered as a pair *
+ * alphanumerically                                         *
+ * ---------------------------------------------------------*/
+void getMove(int *moveFrom, int *moveTo, board *theBoard, int color){
+    // get moveFrom
+    while(getMoveSquare(moveFrom) == false || !theBoard->isOccupiedByColor(moveFrom[0], moveFrom[1], color)){
+        cout << "Invalid piece!\n";
     }
-    // Input format not supported
-    else{
-        moveTo[0] = 8; // Out of bounds square
-        moveTo[1] = 8; // Out of bounds square
+
+    // get moveTo
+    while(getMoveSquare(moveTo) == false || !theBoard->getSquare(moveFrom[0], moveFrom[1])->getPiece()->canMove(moveTo[0], moveTo[1], theBoard)){
+        cout << "Invalid move!\n";
     }
 }
 
