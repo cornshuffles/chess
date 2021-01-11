@@ -1142,6 +1142,12 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
     if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
+    // Verify that the new location does not place the friendly king in check
+    board *testBoard = copyBoard(theBoard);
+    testBoard->move(xCurrent,yCurrent, xNew, yNew);
+    if(testBoard->isChecked(theBoard->getSquare(xCurrent, yCurrent)->getPiece()->getColor())){
+        return false;
+    }
     // Verify that the new square is not occupied by a friendly piece
     if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
         if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
@@ -1227,8 +1233,8 @@ bool queen::canMove(int xNew, int yNew, board *theBoard){
             xCurrent--;
             yCurrent--;
         }
-    }
-
+    }    
+    
     // If the move hasn't been invalidated by now then it must be valid
     return true;
 }
@@ -1254,6 +1260,12 @@ bool bishop::canMove(int xNew, int yNew, board *theBoard){
 
     // Verify that the new location is a valid board location
     if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
+        return false;
+    }
+    // Verify that the new location does not place the friendly king in check
+    board *testBoard = copyBoard(theBoard);
+    testBoard->move(xCurrent,yCurrent, xNew, yNew);
+    if(testBoard->isChecked(theBoard->getSquare(xCurrent, yCurrent)->getPiece()->getColor())){
         return false;
     }
     // Verify that the new square is not occupied by a friendly piece
@@ -1342,6 +1354,12 @@ bool knight::canMove(int xNew, int yNew, board *theBoard){
     if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
+    // Verify that the new location does not place the friendly king in check
+    board *testBoard = copyBoard(theBoard);
+    testBoard->move(xCurrent,yCurrent, xNew, yNew);
+    if(testBoard->isChecked(theBoard->getSquare(xCurrent, yCurrent)->getPiece()->getColor())){
+        return false;
+    }
     // Verify that the new square is not occupied by a friendly piece
     if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
         if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
@@ -1349,6 +1367,9 @@ bool knight::canMove(int xNew, int yNew, board *theBoard){
         }
     }
     // Verify that the new Square is within reach of the knight
+    if(xDelta == 0 || yDelta == 0){
+        return false; // Cannot move to the same space or laterally
+    }
     if(xDelta == 2 && yDelta == 1){
         return true;
     }
@@ -1381,6 +1402,12 @@ bool rook::canMove(int xNew, int yNew, board *theBoard){
 
     // Verify that the new location is a valid board location
     if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
+        return false;
+    }
+    // Verify that the new location does not place the friendly king in check
+    board *testBoard = copyBoard(theBoard);
+    testBoard->move(xCurrent,yCurrent, xNew, yNew);
+    if(testBoard->isChecked(theBoard->getSquare(xCurrent, yCurrent)->getPiece()->getColor())){
         return false;
     }
     // Verify that the new square is not occupied by a friendly piece
@@ -1425,7 +1452,6 @@ bool rook::canMove(int xNew, int yNew, board *theBoard){
             }
         }
     }
-    
     // If the move hasn't been invalidated by now then it must be valid
     return true;
 }
@@ -1452,11 +1478,20 @@ bool pawn::canMove(int xNew, int yNew, board *theBoard){
     if(xNew < 0 || yNew < 0 || xNew > 7 || yNew > 7){
         return false;
     }
+    // Verify that the new location does not place the friendly king in check
+    board *testBoard = copyBoard(theBoard);
+    testBoard->move(xCurrent,yCurrent, xNew, yNew);
+    if(testBoard->isChecked(theBoard->getSquare(xCurrent, yCurrent)->getPiece()->getColor())){
+        return false;
+    }
     // Verify that the new square is not occupied by a friendly piece
     if(theBoard->getSquare(xNew, yNew)->getPiece() != NULL){
         if(theBoard->getSquare(xNew, yNew)->getPiece()->getColor() == getColor()){
             return false;
         }
+    }
+    if(xDelta == 0 && yDelta == 0){
+        return false; // Cannot move to the same space or laterally
     }
     // Verify that the new Square is within reach of the pawn
     int myColor = getColor();
