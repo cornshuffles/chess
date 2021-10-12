@@ -531,6 +531,31 @@ bool board::isChecked(int color){
             return true;
         }
     }
+    // Verify that the king is not threatened by pawns
+    if(enemyColor == WHITE){
+        if(!(xCurrent - 1 < 0 || yCurrent - 1 < 0)){ // check southwest
+            if(isOccupiedByColor(xCurrent - 1, yCurrent - 1, enemyColor) && isOccupiedByPiece(xCurrent - 1, yCurrent - 1, PAWN)){
+                return true;
+            }
+        }
+        if(!(xCurrent + 1 > 7 || yCurrent - 1 < 0)){ // check southeast
+            if(isOccupiedByColor(xCurrent + 1, yCurrent - 1, enemyColor) && isOccupiedByPiece(xCurrent + 1, yCurrent - 1, PAWN)){
+                return true;
+            }
+        }
+    }
+    else{ // Enemy color is black
+        if(!(xCurrent - 1 < 0 || yCurrent + 1 > 7)){ // check northwest
+            if(isOccupiedByColor(xCurrent - 1, yCurrent + 1, enemyColor) && isOccupiedByPiece(xCurrent - 1, yCurrent + 1, PAWN)){
+                return true;
+            }
+        }
+        if(!(xCurrent + 1 > 7 || yCurrent + 1 > 7)){ // check northeast
+            if(isOccupiedByColor(xCurrent + 1, yCurrent + 1, enemyColor) && isOccupiedByPiece(xCurrent + 1, yCurrent + 1, PAWN)){
+                return true;
+            }
+        }
+    }
     
     // Verify that the king is not threatened by any other pieces
     if(!(checkLinesOfSight(xCurrent, yCurrent, enemyColor))){
@@ -551,7 +576,7 @@ bool board::isChecked(int color){
  *                     non-knight                       *
  * Description: returns a bool indicating whether the   *
  *              given square is threatened by a         *
-*               non-knight                              *
+*               piece other than pawn or knight         *
  * -----------------------------------------------------*/
 bool board::checkLinesOfSight(int x, int y, int enemyColor){
     if(this->checkNorth(x, y, enemyColor) == false
@@ -620,11 +645,6 @@ bool board::checkNorthEast(int x, int y, int enemyColor){
             return checkNorthEast(x + 1, y + 1, enemyColor);
         }
         else{
-            if(enemyColor == BLACK){
-                if(squareArray[x + 1][y + 1].getPiece()->getColor() == enemyColor && squareArray[x + 1][y + 1].getPiece()->getType() == PAWN){
-                    return true;
-                }
-            }
             if(squareArray[x + 1][y + 1].getPiece()->getColor() == enemyColor && squareArray[x + 1][y + 1].getPiece()->getType() == BISHOP){
                 return true;
             }
@@ -692,11 +712,6 @@ bool board::checkSouthEast(int x, int y, int enemyColor){
             return checkSouthEast(x + 1, y - 1, enemyColor);
         }
         else{
-            if(enemyColor == WHITE){
-                if(squareArray[x + 1][y - 1].getPiece()->getColor() == enemyColor && squareArray[x + 1][y - 1].getPiece()->getType() == PAWN){
-                    return true;
-                }
-            }
             if(squareArray[x + 1][y - 1].getPiece()->getColor() == enemyColor && squareArray[x + 1][y - 1].getPiece()->getType() == BISHOP){
                 return true;
             }
@@ -763,11 +778,6 @@ bool board::checkSouthWest(int x, int y, int enemyColor){
             return checkSouthWest(x - 1, y - 1, enemyColor);
         }
         else{
-            if(enemyColor == WHITE){
-                if(squareArray[x - 1][y - 1].getPiece()->getColor() == enemyColor && squareArray[x - 1][y - 1].getPiece()->getType() == PAWN){
-                    return true;
-                }
-            }
             if(squareArray[x - 1][y - 1].getPiece()->getColor() == enemyColor && squareArray[x - 1][y - 1].getPiece()->getType() == BISHOP){
                 return true;
             }
@@ -835,11 +845,6 @@ bool board::checkNorthWest(int x, int y, int enemyColor){
             return checkNorthWest(x - 1, y + 1, enemyColor);
         }
         else{
-            if(enemyColor == BLACK){
-                if(squareArray[x - 1][y + 1].getPiece()->getColor() == enemyColor && squareArray[x - 1][y + 1].getPiece()->getType() == PAWN){
-                    return true;
-                }
-            }
             if(squareArray[x - 1][y + 1].getPiece()->getColor() == enemyColor && squareArray[x - 1][y + 1].getPiece()->getType() == BISHOP){
                 return true;
             }
