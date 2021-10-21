@@ -1034,37 +1034,37 @@ void board::printBoard(){
         }
     }
 
-    stringToPrint =  "#########################################################################\n";
+    stringToPrint =  "####A########B########C########D########E########F########G########H#####\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
-    stringToPrint += "8   " + pieces[0][7] + "   #   " + pieces[1][7] + "   #   " + pieces[2][7] + "   #   " + pieces[3][7] + "   #   " + pieces[4][7] + "   #   " + pieces[5][7] + "   #   " + pieces[6][7] + "   #   " + pieces[7][7] + "   #\n";
-    stringToPrint += "#        #        #        #        #        #        #        #        #\n";
-    stringToPrint += "#########################################################################\n";
-    stringToPrint += "#        #        #        #        #        #        #        #        #\n";
-    stringToPrint += "7   " + pieces[0][6] + "   #   " + pieces[1][6] + "   #   " + pieces[2][6] + "   #   " + pieces[3][6] + "   #   " + pieces[4][6] + "   #   " + pieces[5][6] + "   #   " + pieces[6][6] + "   #   " + pieces[7][6] + "   #\n";
+    stringToPrint += "8   " + pieces[0][7] + "   #   " + pieces[1][7] + "   #   " + pieces[2][7] + "   #   " + pieces[3][7] + "   #   " + pieces[4][7] + "   #   " + pieces[5][7] + "   #   " + pieces[6][7] + "   #   " + pieces[7][7] + "   8\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
     stringToPrint += "#########################################################################\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
-    stringToPrint += "6   " + pieces[0][5] + "   #   " + pieces[1][5] + "   #   " + pieces[2][5] + "   #   " + pieces[3][5] + "   #   " + pieces[4][5] + "   #   " + pieces[5][5] + "   #   " + pieces[6][5] + "   #   " + pieces[7][5] + "   #\n";
+    stringToPrint += "7   " + pieces[0][6] + "   #   " + pieces[1][6] + "   #   " + pieces[2][6] + "   #   " + pieces[3][6] + "   #   " + pieces[4][6] + "   #   " + pieces[5][6] + "   #   " + pieces[6][6] + "   #   " + pieces[7][6] + "   7\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
     stringToPrint += "#########################################################################\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
-    stringToPrint += "5   " + pieces[0][4] + "   #   " + pieces[1][4] + "   #   " + pieces[2][4] + "   #   " + pieces[3][4] + "   #   " + pieces[4][4] + "   #   " + pieces[5][4] + "   #   " + pieces[6][4] + "   #   " + pieces[7][4] + "   #\n";
+    stringToPrint += "6   " + pieces[0][5] + "   #   " + pieces[1][5] + "   #   " + pieces[2][5] + "   #   " + pieces[3][5] + "   #   " + pieces[4][5] + "   #   " + pieces[5][5] + "   #   " + pieces[6][5] + "   #   " + pieces[7][5] + "   6\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
     stringToPrint += "#########################################################################\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
-    stringToPrint += "4   " + pieces[0][3] + "   #   " + pieces[1][3] + "   #   " + pieces[2][3] + "   #   " + pieces[3][3] + "   #   " + pieces[4][3] + "   #   " + pieces[5][3] + "   #   " + pieces[6][3] + "   #   " + pieces[7][3] + "   #\n";
+    stringToPrint += "5   " + pieces[0][4] + "   #   " + pieces[1][4] + "   #   " + pieces[2][4] + "   #   " + pieces[3][4] + "   #   " + pieces[4][4] + "   #   " + pieces[5][4] + "   #   " + pieces[6][4] + "   #   " + pieces[7][4] + "   5\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
     stringToPrint += "#########################################################################\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
-    stringToPrint += "3   " + pieces[0][2] + "   #   " + pieces[1][2] + "   #   " + pieces[2][2] + "   #   " + pieces[3][2] + "   #   " + pieces[4][2] + "   #   " + pieces[5][2] + "   #   " + pieces[6][2] + "   #   " + pieces[7][2] + "   #\n";
+    stringToPrint += "4   " + pieces[0][3] + "   #   " + pieces[1][3] + "   #   " + pieces[2][3] + "   #   " + pieces[3][3] + "   #   " + pieces[4][3] + "   #   " + pieces[5][3] + "   #   " + pieces[6][3] + "   #   " + pieces[7][3] + "   4\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
     stringToPrint += "#########################################################################\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
-    stringToPrint += "2   " + pieces[0][1] + "   #   " + pieces[1][1] + "   #   " + pieces[2][1] + "   #   " + pieces[3][1] + "   #   " + pieces[4][1] + "   #   " + pieces[5][1] + "   #   " + pieces[6][1] + "   #   " + pieces[7][1] + "   #\n";
+    stringToPrint += "3   " + pieces[0][2] + "   #   " + pieces[1][2] + "   #   " + pieces[2][2] + "   #   " + pieces[3][2] + "   #   " + pieces[4][2] + "   #   " + pieces[5][2] + "   #   " + pieces[6][2] + "   #   " + pieces[7][2] + "   3\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
     stringToPrint += "#########################################################################\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
-    stringToPrint += "1   " + pieces[0][0] + "   #   " + pieces[1][0] + "   #   " + pieces[2][0] + "   #   " + pieces[3][0] + "   #   " + pieces[4][0] + "   #   " + pieces[5][0] + "   #   " + pieces[6][0] + "   #   " + pieces[7][0] + "   #\n";
+    stringToPrint += "2   " + pieces[0][1] + "   #   " + pieces[1][1] + "   #   " + pieces[2][1] + "   #   " + pieces[3][1] + "   #   " + pieces[4][1] + "   #   " + pieces[5][1] + "   #   " + pieces[6][1] + "   #   " + pieces[7][1] + "   2\n";
+    stringToPrint += "#        #        #        #        #        #        #        #        #\n";
+    stringToPrint += "#########################################################################\n";
+    stringToPrint += "#        #        #        #        #        #        #        #        #\n";
+    stringToPrint += "1   " + pieces[0][0] + "   #   " + pieces[1][0] + "   #   " + pieces[2][0] + "   #   " + pieces[3][0] + "   #   " + pieces[4][0] + "   #   " + pieces[5][0] + "   #   " + pieces[6][0] + "   #   " + pieces[7][0] + "   1\n";
     stringToPrint += "#        #        #        #        #        #        #        #        #\n";
     stringToPrint += "####A########B########C########D########E########F########G########H#####\n";
                             
@@ -1126,13 +1126,13 @@ bool king::canMove(int xNew, int yNew, board *theBoard){
             return false;
         }
     }
-    // If nothing else has returned false check if the new location puts the king in check
+    // If nothing else has returned false, check if the new location puts the king in check
     else{
         board *testBoard = copyBoard(theBoard);
         testBoard->move(xCurrent,yCurrent, xNew, yNew);
 
         // Verify that the new square is not threatened by an enemy piece
-        if(testBoard->isChecked(theBoard->getSquare(xCurrent,yCurrent)->getPiece()->getColor())){
+        if(testBoard->isChecked(getColor())){
             return false;
         }
     }
